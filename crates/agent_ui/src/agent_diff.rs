@@ -709,24 +709,27 @@ impl Render for AgentDiffPane {
                     v_flex()
                         .items_center()
                         .gap_2()
-                        .child("No changes to review")
+                        .child(ui::tr::translate("No changes to review"))
                         .child(
-                            Button::new("continue-iterating", "Continue Iterating")
-                                .style(ButtonStyle::Filled)
-                                .start_icon(
-                                    Icon::new(IconName::ForwardArrow)
-                                        .size(IconSize::Small)
-                                        .color(Color::Muted),
-                                )
-                                .full_width()
-                                .key_binding(KeyBinding::for_action_in(
-                                    &ToggleFocus,
-                                    &focus_handle.clone(),
-                                    cx,
-                                ))
-                                .on_click(|_event, window, cx| {
-                                    window.dispatch_action(ToggleFocus.boxed_clone(), cx)
-                                }),
+                            Button::new(
+                                "continue-iterating",
+                                ui::tr::translate("Continue Iterating"),
+                            )
+                            .style(ButtonStyle::Filled)
+                            .start_icon(
+                                Icon::new(IconName::ForwardArrow)
+                                    .size(IconSize::Small)
+                                    .color(Color::Muted),
+                            )
+                            .full_width()
+                            .key_binding(KeyBinding::for_action_in(
+                                &ToggleFocus,
+                                &focus_handle.clone(),
+                                cx,
+                            ))
+                            .on_click(|_event, window, cx| {
+                                window.dispatch_action(ToggleFocus.boxed_clone(), cx)
+                            }),
                         ),
                 )
             })
@@ -1154,7 +1157,7 @@ impl Render for AgentDiffToolbar {
                         h_flex()
                             .gap_0p5()
                             .child(
-                                Button::new("reject-all", "Reject All")
+                                Button::new("reject-all", ui::tr::translate("Reject All"))
                                     .key_binding({
                                         KeyBinding::for_action_in(
                                             &RejectAll,
@@ -1168,7 +1171,7 @@ impl Render for AgentDiffToolbar {
                                     })),
                             )
                             .child(
-                                Button::new("keep-all", "Keep All")
+                                Button::new("keep-all", ui::tr::translate("Keep All"))
                                     .key_binding({
                                         KeyBinding::for_action_in(
                                             &KeepAll,
@@ -1250,7 +1253,7 @@ impl Render for AgentDiffToolbar {
                     .child(
                         h_group_sm()
                             .child(
-                                Button::new("reject-all", "Reject All")
+                                Button::new("reject-all", ui::tr::translate("Reject All"))
                                     .key_binding({
                                         KeyBinding::for_action_in(&RejectAll, &focus_handle, cx)
                                             .map(|kb| kb.size(rems_from_px(12.)))
@@ -1260,7 +1263,7 @@ impl Render for AgentDiffToolbar {
                                     })),
                             )
                             .child(
-                                Button::new("keep-all", "Keep All")
+                                Button::new("keep-all", ui::tr::translate("Keep All"))
                                     .key_binding({
                                         KeyBinding::for_action_in(&KeepAll, &focus_handle, cx)
                                             .map(|kb| kb.size(rems_from_px(12.)))

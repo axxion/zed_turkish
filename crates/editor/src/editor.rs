@@ -1714,7 +1714,7 @@ impl Render for GutterButtonTooltip {
             this.child(
                 h_flex()
                     .justify_between()
-                    .child(intent.as_str())
+                    .child(ui::tr::translate(intent.as_str()))
                     .child(key_binding),
             )
             .child(
@@ -4246,7 +4246,7 @@ impl Editor {
                 .when_some(
                     clear_runnable_task_status,
                     |this, (buffer_id, buffer_row)| {
-                        this.entry("Clear Run Status", None, {
+                        this.entry(ui::tr::translate("Clear Run Status"), None, {
                             let weak_editor = weak_editor.clone();
                             move |_window, cx| {
                                 weak_editor
@@ -4262,7 +4262,7 @@ impl Editor {
                 .when(run_to_cursor, |this| {
                     let weak_editor = weak_editor.clone();
                     this.entry(
-                        "Run to Cursor",
+                        ui::tr::translate("Run to Cursor"),
                         Some(RunToCursor.boxed_clone()),
                         move |window, cx| {
                             weak_editor
@@ -4286,7 +4286,7 @@ impl Editor {
                     .separator()
                 })
                 .when_some(toggle_state_entry, |this, (msg, action)| {
-                    this.entry(msg, Some(action), {
+                    this.entry(ui::tr::translate(msg), Some(action), {
                         let weak_editor = weak_editor.clone();
                         let breakpoint = breakpoint.clone();
                         move |_window, cx| {
@@ -4304,7 +4304,7 @@ impl Editor {
                     })
                 })
                 .entry(
-                    set_breakpoint_msg,
+                    ui::tr::translate(set_breakpoint_msg),
                     Some(crate::actions::ToggleBreakpoint.boxed_clone()),
                     {
                         let weak_editor = weak_editor.clone();
@@ -4324,7 +4324,7 @@ impl Editor {
                     },
                 )
                 .entry(
-                    log_breakpoint_msg,
+                    ui::tr::translate(log_breakpoint_msg),
                     Some(crate::actions::EditLogBreakpoint.boxed_clone()),
                     {
                         let breakpoint = breakpoint.clone();
@@ -4344,7 +4344,7 @@ impl Editor {
                         }
                     },
                 )
-                .entry(condition_breakpoint_msg, None, {
+                .entry(ui::tr::translate(condition_breakpoint_msg), None, {
                     let breakpoint = breakpoint.clone();
                     let weak_editor = weak_editor.clone();
                     move |window, cx| {
@@ -4361,7 +4361,7 @@ impl Editor {
                             .log_err();
                     }
                 })
-                .entry(hit_condition_breakpoint_msg, None, {
+                .entry(ui::tr::translate(hit_condition_breakpoint_msg), None, {
                     let breakpoint = breakpoint.clone();
                     let weak_editor = weak_editor.clone();
                     move |window, cx| {
@@ -4379,30 +4379,38 @@ impl Editor {
                     }
                 })
                 .separator()
-                .entry(git_blame_msg, Some(Blame.boxed_clone()), {
-                    let weak_editor = weak_editor.clone();
-                    move |window, cx| {
-                        weak_editor
-                            .update(cx, |this, cx| {
-                                this.toggle_git_blame(&Blame, window, cx);
-                            })
-                            .log_err();
-                    }
-                })
+                .entry(
+                    ui::tr::translate(git_blame_msg),
+                    Some(Blame.boxed_clone()),
+                    {
+                        let weak_editor = weak_editor.clone();
+                        move |window, cx| {
+                            weak_editor
+                                .update(cx, |this, cx| {
+                                    this.toggle_git_blame(&Blame, window, cx);
+                                })
+                                .log_err();
+                        }
+                    },
+                )
                 .separator()
-                .entry(set_bookmark_msg, Some(ToggleBookmark.boxed_clone()), {
-                    let weak_editor = weak_editor.clone();
-                    move |_window, cx| {
-                        weak_editor
-                            .update(cx, |this, cx| {
-                                this.toggle_bookmark_at_anchor(anchor, cx);
-                            })
-                            .log_err();
-                    }
-                })
+                .entry(
+                    ui::tr::translate(set_bookmark_msg),
+                    Some(ToggleBookmark.boxed_clone()),
+                    {
+                        let weak_editor = weak_editor.clone();
+                        move |_window, cx| {
+                            weak_editor
+                                .update(cx, |this, cx| {
+                                    this.toggle_bookmark_at_anchor(anchor, cx);
+                                })
+                                .log_err();
+                        }
+                    },
+                )
                 .when(has_bookmark, |this| {
                     this.entry(
-                        "Edit Bookmark",
+                        ui::tr::translate("Edit Bookmark"),
                         Some(EditBookmark.boxed_clone()),
                         move |window, cx| {
                             weak_editor

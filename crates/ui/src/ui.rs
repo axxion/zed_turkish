@@ -11,6 +11,7 @@ pub mod component_prelude;
 mod components;
 pub mod prelude;
 mod styles;
+pub mod tr;
 mod traits;
 pub mod utils;
 

@@ -1198,12 +1198,12 @@ impl SettingsPageItem {
                                 .relative()
                                 .w_full()
                                 .max_w_1_2()
-                                .child(Label::new(sub_page_link.title.clone()))
+                                .child(Label::new(ui::tr::translate(sub_page_link.title.clone())))
                                 .when_some(
                                     sub_page_link.description.as_ref(),
                                     |this, description| {
                                         this.child(
-                                            Label::new(description.clone())
+                                            Label::new(ui::tr::translate(description.clone()))
                                                 .size(LabelSize::Small)
                                                 .color(Color::Muted),
                                         )
@@ -1334,12 +1334,12 @@ impl SettingsPageItem {
                                 .relative()
                                 .w_full()
                                 .max_w_1_2()
-                                .child(Label::new(action_link.title.clone()))
+                                .child(Label::new(ui::tr::translate(action_link.title.clone())))
                                 .when_some(
                                     action_link.description.as_ref(),
                                     |this, description| {
                                         this.child(
-                                            Label::new(description.clone())
+                                            Label::new(ui::tr::translate(description.clone()))
                                                 .size(LabelSize::Small)
                                                 .color(Color::Muted),
                                         )
@@ -1406,7 +1406,7 @@ fn render_settings_item_layout(
                     h_flex()
                         .w_full()
                         .gap_1()
-                        .child(Label::new(SharedString::new_static(title)))
+                        .child(Label::new(ui::tr::translate(title)))
                         .when_some(reset_fn, |this, reset_to_default| {
                             this.child(
                                 IconButton::new("reset-to-default-btn", IconName::Undo)
@@ -1428,7 +1428,7 @@ fn render_settings_item_layout(
                         }),
                 )
                 .child(
-                    Label::new(SharedString::new_static(description))
+                    Label::new(ui::tr::translate(description))
                         .size(LabelSize::Small)
                         .color(Color::Muted)
                         .render_code_spans(),
@@ -3174,7 +3174,7 @@ impl SettingsWindow {
                                     .map(|(entry_index, entry)| {
                                         TreeViewItem::new(
                                             ("settings-ui-navbar-entry", entry_index),
-                                            entry.title,
+                                            ui::tr::translate(entry.title),
                                         )
                                         .track_focus(&entry.focus_handle)
                                         .root_item(entry.is_root)
@@ -3517,11 +3517,15 @@ impl SettingsWindow {
             .items_center()
             .justify_center()
             .gap_1()
-            .child(Label::new("No Results"))
+            .child(Label::new(ui::tr::translate("No Results")))
             .child(
-                Label::new(format!("No settings match \"{}\"", search_query))
-                    .size(LabelSize::Small)
-                    .color(Color::Muted),
+                Label::new(format!(
+                    "{} \"{}\"",
+                    ui::tr::translate("No settings match"),
+                    search_query
+                ))
+                .size(LabelSize::Small)
+                .color(Color::Muted),
             )
     }
 
@@ -3565,7 +3569,10 @@ impl SettingsWindow {
                             .when(this.sub_page_stack.is_empty(), |this| {
                                 this.when_some(root_nav_label, |this, title| {
                                     this.child(
-                                        Label::new(title).size(LabelSize::Large).mt_2().mb_3(),
+                                        Label::new(ui::tr::translate(title))
+                                            .size(LabelSize::Large)
+                                            .mt_2()
+                                            .mb_3(),
                                     )
                                 })
                             })
@@ -3682,7 +3689,12 @@ impl SettingsWindow {
             page_content
                 .when(self.sub_page_stack.is_empty(), |this| {
                     this.when_some(root_nav_label, |this, title| {
-                        this.child(Label::new(title).size(LabelSize::Large).mt_2().mb_3())
+                        this.child(
+                            Label::new(ui::tr::translate(title))
+                                .size(LabelSize::Large)
+                                .mt_2()
+                                .mb_3(),
+                        )
                     })
                 })
                 .children(items.clone().into_iter().enumerate().map(

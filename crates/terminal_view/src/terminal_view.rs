@@ -528,39 +528,48 @@ impl TerminalView {
         let context_menu = ContextMenu::build(window, cx, |menu, _, _| {
             menu.context(self.focus_handle.clone())
                 .when(self.shows_workspace_actions(), |menu| {
-                    menu.action("New Terminal", Box::new(NewTerminal::default()))
-                        .action(
-                            "New Center Terminal",
-                            Box::new(NewCenterTerminal::default()),
-                        )
-                        .separator()
+                    menu.action(
+                        ui::tr::translate("New Terminal"),
+                        Box::new(NewTerminal::default()),
+                    )
+                    .action(
+                        ui::tr::translate("New Center Terminal"),
+                        Box::new(NewCenterTerminal::default()),
+                    )
+                    .separator()
                 })
-                .action("Copy", Box::new(Copy))
+                .action(ui::tr::translate("Copy"), Box::new(Copy))
                 .when(
                     !matches!(self.mode, TerminalMode::Embedded { .. }),
                     |menu| {
-                        menu.action("Paste", Box::new(Paste))
-                            .action("Paste Text", Box::new(PasteText))
+                        menu.action(ui::tr::translate("Paste"), Box::new(Paste))
+                            .action(ui::tr::translate("Paste Text"), Box::new(PasteText))
                     },
                 )
-                .action("Select All", Box::new(SelectAll))
+                .action(ui::tr::translate("Select All"), Box::new(SelectAll))
                 .when(
                     !matches!(self.mode, TerminalMode::Embedded { .. }),
-                    |menu| menu.action("Clear", Box::new(Clear)),
+                    |menu| menu.action(ui::tr::translate("Clear"), Box::new(Clear)),
                 )
                 .when(
                     assistant_enabled && !matches!(self.mode, TerminalMode::Embedded { .. }),
                     |menu| {
                         menu.separator()
-                            .action("Inline Assist", Box::new(InlineAssist::default()))
+                            .action(
+                                ui::tr::translate("Inline Assist"),
+                                Box::new(InlineAssist::default()),
+                            )
                             .when(has_selection && self.shows_workspace_actions(), |menu| {
-                                menu.action("Add to Agent Thread", Box::new(AddSelectionToThread))
+                                menu.action(
+                                    ui::tr::translate("Add to Agent Thread"),
+                                    Box::new(AddSelectionToThread),
+                                )
                             })
                     },
                 )
                 .when(self.shows_workspace_actions(), |menu| {
                     menu.separator().action(
-                        "Close Terminal Tab",
+                        ui::tr::translate("Close Terminal Tab"),
                         Box::new(CloseActiveItem {
                             save_intent: None,
                             close_pinned: true,
@@ -1446,9 +1455,13 @@ impl Item for TerminalView {
                     .child(Label::new(title.clone()))
                     .child(h_flex().flex_grow_1().child(Divider::horizontal()))
                     .child(
-                        Label::new(format!("Process ID (PID): {}", pid))
-                            .color(Color::Muted)
-                            .size(LabelSize::Small),
+                        Label::new(format!(
+                            "{}: {}",
+                            ui::tr::translate("Process ID (PID)"),
+                            pid
+                        ))
+                        .color(Color::Muted)
+                        .size(LabelSize::Small),
                     )
                     .into_any_element()
             }

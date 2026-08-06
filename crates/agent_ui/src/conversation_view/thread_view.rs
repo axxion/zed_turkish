@@ -4172,7 +4172,7 @@ impl ThreadView {
                     )
                     .child(Divider::vertical().color(DividerColor::Border))
                     .child(
-                        Button::new("reject-all-changes", "Reject All")
+                        Button::new("reject-all-changes", ui::tr::translate("Reject All"))
                             .label_size(LabelSize::Small)
                             .disabled(pending_edits)
                             .when(pending_edits, |this| {
@@ -6173,7 +6173,7 @@ impl ThreadView {
                                 .gap_2()
                                 .child(Divider::horizontal())
                                 .child(
-                                    Button::new("restore-checkpoint", "Restore Checkpoint")
+                                    Button::new("restore-checkpoint", ui::tr::translate("Restore Checkpoint"))
                                         .start_icon(Icon::new(IconName::Undo).size(IconSize::XSmall).color(Color::Muted))
                                         .label_size(LabelSize::XSmall)
                                         .color(Color::Muted)
@@ -7595,7 +7595,7 @@ impl ThreadView {
                         });
 
                     let scroll_item = if is_at_top {
-                        ContextMenuEntry::new("Scroll to Bottom").handler({
+                        ContextMenuEntry::new(ui::tr::translate("Scroll to Bottom")).handler({
                             let entity = entity.clone();
                             move |_, cx| {
                                 entity.update(cx, |this, cx| {
@@ -7604,7 +7604,7 @@ impl ThreadView {
                             }
                         })
                     } else {
-                        ContextMenuEntry::new("Scroll to Top").handler({
+                        ContextMenuEntry::new(ui::tr::translate("Scroll to Top")).handler({
                             let entity = entity.clone();
                             move |_, cx| {
                                 entity.update(cx, |this, cx| {
@@ -7614,31 +7614,32 @@ impl ThreadView {
                         })
                     };
 
-                    let open_thread_as_markdown = ContextMenuEntry::new("Open Thread as Markdown")
-                        .handler({
-                            let entity = entity.clone();
-                            let workspace = workspace.clone();
-                            move |window, cx| {
-                                if let Some(workspace) = workspace.upgrade() {
-                                    entity
-                                        .update(cx, |this, cx| {
-                                            this.open_thread_as_markdown(workspace, window, cx)
-                                        })
-                                        .detach_and_log_err(cx);
+                    let open_thread_as_markdown =
+                        ContextMenuEntry::new(ui::tr::translate("Open Thread as Markdown"))
+                            .handler({
+                                let entity = entity.clone();
+                                let workspace = workspace.clone();
+                                move |window, cx| {
+                                    if let Some(workspace) = workspace.upgrade() {
+                                        entity
+                                            .update(cx, |this, cx| {
+                                                this.open_thread_as_markdown(workspace, window, cx)
+                                            })
+                                            .detach_and_log_err(cx);
+                                    }
                                 }
-                            }
-                        });
+                            });
 
                     menu.when_some(focus, |menu, focus| menu.context(focus))
                         .when_some(context_menu_link, |menu, url| {
-                            menu.entry("Copy Link", None, move |_, cx| {
+                            menu.entry(ui::tr::translate("Copy Link"), None, move |_, cx| {
                                 cx.write_to_clipboard(ClipboardItem::new_string(url.to_string()));
                             })
                             .separator()
                         })
                         .action_disabled_when(
                             !has_selection,
-                            "Copy Selection",
+                            ui::tr::translate("Copy Selection"),
                             Box::new(markdown::CopyAsMarkdown),
                         )
                         .item(copy_this_agent_response)

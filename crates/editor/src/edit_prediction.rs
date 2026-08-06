@@ -1744,17 +1744,27 @@ impl Editor {
             .items_end()
             .when(flag_on_right, |el| el.items_start())
             .child(if flag_on_right {
-                self.render_edit_prediction_line_popover("Jump", None, window, cx)
-                    .rounded_bl(px(0.))
-                    .rounded_tl(px(0.))
-                    .border_l_2()
-                    .border_color(border_color)
+                self.render_edit_prediction_line_popover(
+                    ui::tr::translate("Jump"),
+                    None,
+                    window,
+                    cx,
+                )
+                .rounded_bl(px(0.))
+                .rounded_tl(px(0.))
+                .border_l_2()
+                .border_color(border_color)
             } else {
-                self.render_edit_prediction_line_popover("Jump", None, window, cx)
-                    .rounded_br(px(0.))
-                    .rounded_tr(px(0.))
-                    .border_r_2()
-                    .border_color(border_color)
+                self.render_edit_prediction_line_popover(
+                    ui::tr::translate("Jump"),
+                    None,
+                    window,
+                    cx,
+                )
+                .rounded_br(px(0.))
+                .rounded_tr(px(0.))
+                .border_r_2()
+                .border_color(border_color)
             })
             .child(div().w(POLE_WIDTH).bg(border_color).h(line_height))
             .into_any();
@@ -1790,7 +1800,12 @@ impl Editor {
         cx: &mut App,
     ) -> Option<(AnyElement, gpui::Point<Pixels>)> {
         let mut element = self
-            .render_edit_prediction_line_popover("Scroll", Some(scroll_icon), window, cx)
+            .render_edit_prediction_line_popover(
+                ui::tr::translate("Scroll"),
+                Some(scroll_icon),
+                window,
+                cx,
+            )
             .into_any();
 
         let size = element.layout_as_root(AvailableSpace::min_size(), window, cx);
@@ -1826,7 +1841,7 @@ impl Editor {
         if target_display_point.row().as_f64() < scroll_top {
             let mut element = self
                 .render_edit_prediction_line_popover(
-                    "Jump to Edit",
+                    ui::tr::translate("Jump to Edit"),
                     Some(IconName::ArrowUp),
                     window,
                     cx,
@@ -1845,7 +1860,7 @@ impl Editor {
         } else if (target_display_point.row().as_f64() + 1.) > scroll_bottom {
             let mut element = self
                 .render_edit_prediction_line_popover(
-                    "Jump to Edit",
+                    ui::tr::translate("Jump to Edit"),
                     Some(IconName::ArrowDown),
                     window,
                     cx,

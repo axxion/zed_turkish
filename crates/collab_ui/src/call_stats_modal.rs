@@ -296,9 +296,9 @@ impl Render for CallStatsModal {
             .child(
                 h_flex()
                     .justify_between()
-                    .child(Label::new("Call Diagnostics").size(LabelSize::Large))
+                    .child(Label::new(ui::tr::translate("Call Diagnostics")).size(LabelSize::Large))
                     .child(
-                        Label::new(quality_text)
+                        Label::new(ui::tr::translate(quality_text))
                             .size(LabelSize::Large)
                             .color(quality_color),
                     ),
@@ -307,7 +307,10 @@ impl Render for CallStatsModal {
                 this.child(
                     h_flex()
                         .justify_center()
-                        .child(Label::new("Showing diagnostics from the most recent call").color(Color::Muted)),
+                        .child(Label::new(ui::tr::translate(
+                            "Showing diagnostics from the most recent call",
+                        ))
+                        .color(Color::Muted)),
                 )
             })
             .when(!has_diagnostics, |this| {
@@ -315,7 +318,7 @@ impl Render for CallStatsModal {
                     h_flex()
                         .justify_center()
                         .py_4()
-                        .child(Label::new("No call diagnostics available").color(Color::Muted)),
+                        .child(Label::new(ui::tr::translate("No call diagnostics available")).color(Color::Muted)),
                 )
             })
             .when(has_diagnostics, |this| {
@@ -336,7 +339,7 @@ impl Render for CallStatsModal {
                         .child(
                             v_flex()
                                 .gap_1()
-                                .child(Label::new("Network").weight(FontWeight::SEMIBOLD))
+                                .child(Label::new(ui::tr::translate("Network")).weight(FontWeight::SEMIBOLD))
                                 .child(self.render_metric_row(
                                     "Latency",
                                     "Time for data to travel to the server",
@@ -369,10 +372,10 @@ impl Render for CallStatsModal {
                         .child(
                             v_flex()
                                 .gap_1()
-                                .child(Label::new("Inbound audio").weight(FontWeight::SEMIBOLD))
+                                .child(Label::new(ui::tr::translate("Inbound audio")).weight(FontWeight::SEMIBOLD))
                                 .when(remote_audio.is_empty(), |this| {
                                     this.child(
-                                        Label::new("Waiting for inbound audio statistics")
+                                        Label::new(ui::tr::translate("Waiting for inbound audio statistics"))
                                             .color(Color::Muted),
                                     )
                                 })
@@ -390,11 +393,11 @@ impl Render for CallStatsModal {
                         .justify_end()
                         .gap_2()
                         .child(
-                            Button::new("copy-call-diagnostics", "Copy Report")
+                            Button::new("copy-call-diagnostics", ui::tr::translate("Copy Report"))
                                 .on_click(cx.listener(|this, _, _, cx| this.copy_report(cx))),
                         )
                         .child(
-                            Button::new("save-call-diagnostics", "Save Report…")
+                            Button::new("save-call-diagnostics", ui::tr::translate("Save Report…"))
                                 .on_click(cx.listener(|this, _, _, cx| this.save_report(cx))),
                         ),
                 )
@@ -468,7 +471,7 @@ impl CallStatsModal {
                                 .color(Color::Muted),
                             ),
                     )
-                    .child(Label::new(status).color(color)),
+                    .child(Label::new(ui::tr::translate(status)).color(color)),
             )
             .child(
                 Label::new(format!(
@@ -518,9 +521,9 @@ impl CallStatsModal {
             .justify_between()
             .child(
                 v_flex()
-                    .child(Label::new(title.to_string()).size(LabelSize::Default))
+                    .child(Label::new(ui::tr::translate(title)).size(LabelSize::Default))
                     .child(
-                        Label::new(description.to_string())
+                        Label::new(ui::tr::translate(description))
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     ),
@@ -529,7 +532,7 @@ impl CallStatsModal {
                 v_flex()
                     .items_end()
                     .child(
-                        Label::new(rating_text)
+                        Label::new(ui::tr::translate(rating_text))
                             .size(LabelSize::Default)
                             .color(rating_color),
                     )

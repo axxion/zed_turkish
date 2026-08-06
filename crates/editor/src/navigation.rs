@@ -1508,9 +1508,9 @@ impl Editor {
                     .take(3)
                     .join(", ");
                 let title = if target.is_empty() {
-                    "References".to_owned()
+                    ui::tr::translate("References").to_string()
                 } else {
-                    format!("References to {target}")
+                    format!("{} {target}", ui::tr::translate("References to"))
                 };
                 let allow_preview = PreviewTabsSettings::get_global(cx)
                     .enable_preview_multibuffer_from_code_navigation;
@@ -1789,9 +1789,9 @@ impl Editor {
                             .take(3)
                             .join(", ");
                         if target.is_empty() {
-                            tab_kind.to_owned()
+                            ui::tr::translate(tab_kind).to_string()
                         } else {
-                            format!("{tab_kind} for {target}")
+                            format!("{} {target}", ui::tr::translate(format!("{tab_kind} for")))
                         }
                     })
                     .context("buffer title")?;

@@ -48,10 +48,14 @@ impl Label {
     ///
     /// let my_label = Label::new("Hello, World!");
     /// ```
+    /// Metin, `ui::tr::translate()` üzerinden geçirilir: `translations.json`
+    /// veya yerleşik sözlükte karşılığı varsa Türkçesi gösterilir, yoksa
+    /// metin aynen kalır. Bu sayede etiket kullanan tüm bileşenler
+    /// (Button, Chip, ListHeader, ContextMenu, Modal…) tek noktadan çevrilir.
     pub fn new(label: impl Into<SharedString>) -> Self {
         Self {
             base: LabelLike::new(),
-            label: label.into(),
+            label: crate::tr::translate(label),
             render_code_spans: false,
         }
     }
@@ -65,7 +69,7 @@ impl Label {
 
     /// Sets the text of the [`Label`].
     pub fn set_text(&mut self, text: impl Into<SharedString>) {
-        self.label = text.into();
+        self.label = crate::tr::translate(text);
     }
 
     /// Truncates the label from the start, keeping the end visible.

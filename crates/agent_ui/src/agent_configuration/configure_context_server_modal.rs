@@ -878,7 +878,7 @@ impl ConfigureContextServerModal {
                 } = &self.source
                 {
                     Some(
-                        Button::new("open-repository", "Open Repository")
+                        Button::new("open-repository", ui::tr::translate("Open Repository"))
                             .end_icon(
                                 Icon::new(IconName::ArrowUpRight)
                                     .size(IconSize::Small)
@@ -910,11 +910,11 @@ impl ConfigureContextServerModal {
                     .child(
                         Button::new(
                             "cancel",
-                            if self.source.has_configuration_options() {
+                            ui::tr::translate(if self.source.has_configuration_options() {
                                 "Cancel"
                             } else {
                                 "Dismiss"
-                            },
+                            }),
                         )
                         .key_binding(
                             KeyBinding::for_action_in(&menu::Cancel, &focus_handle, cx)
@@ -925,7 +925,7 @@ impl ConfigureContextServerModal {
                         ),
                     )
                     .children(self.source.has_configuration_options().then(|| {
-                        Button::new("configure-server", "Configure Server")
+                        Button::new("configure-server", ui::tr::translate("Configure Server"))
                             .disabled(is_busy)
                             .key_binding(
                                 KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
@@ -968,13 +968,13 @@ impl ConfigureContextServerModal {
                             .color(Color::Muted),
                     )
                     .child(
-                        Label::new("Authenticate to connect this server")
+                        Label::new(ui::tr::translate("Authenticate to connect this server"))
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     ),
             )
             .child(
-                Button::new("authenticate-server", "Authenticate")
+                Button::new("authenticate-server", ui::tr::translate("Authenticate"))
                     .style(ButtonStyle::Outlined)
                     .label_size(LabelSize::Small)
                     .on_click({
@@ -1018,9 +1018,9 @@ impl ConfigureContextServerModal {
                             .color(Color::Muted),
                     )
                     .child(
-                        Label::new(
+                        Label::new(ui::tr::translate(
                             "Enter your OAuth client secret, or leave empty for public clients",
-                        )
+                        ))
                         .size(LabelSize::Small)
                         .color(Color::Muted),
                     ),
@@ -1046,7 +1046,7 @@ impl ConfigureContextServerModal {
                         },
                     )))
                     .child(
-                        Button::new("submit-client-secret", "Submit")
+                        Button::new("submit-client-secret", ui::tr::translate("Submit"))
                             .style(ButtonStyle::Outlined)
                             .label_size(LabelSize::Small)
                             .on_click({
@@ -1074,13 +1074,13 @@ impl ConfigureContextServerModal {
                             .with_rotate_animation(3),
                     )
                     .child(
-                        Label::new("Authenticating…")
+                        Label::new(ui::tr::translate("Authenticating…"))
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     ),
             )
             .child(
-                Button::new("cancel-authentication", "Cancel")
+                Button::new("cancel-authentication", ui::tr::translate("Cancel"))
                     .style(ButtonStyle::Outlined)
                     .label_size(LabelSize::Small)
                     .on_click({

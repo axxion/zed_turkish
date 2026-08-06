@@ -545,7 +545,7 @@ impl ManageProfilesModal {
                             h_flex()
                                 .gap_1()
                                 .child(
-                                    Label::new("Customize")
+                                    Label::new(ui::tr::translate("Customize"))
                                         .size(LabelSize::Small)
                                         .color(Color::Muted),
                                 )
@@ -575,7 +575,10 @@ impl ManageProfilesModal {
             div()
                 .track_focus(&self.focus_handle(cx))
                 .size_full()
-                .child(ProfileModalHeader::new("Agent Profiles", None))
+                .child(ProfileModalHeader::new(
+                    ui::tr::translate("Agent Profiles"),
+                    None,
+                ))
                 .child(
                     v_flex()
                         .pb_1()
@@ -589,7 +592,7 @@ impl ManageProfilesModal {
                             this.child(ListSeparator)
                                 .child(
                                     div().pl_2().pb_1().child(
-                                        Label::new("Custom Profiles")
+                                        Label::new(ui::tr::translate("Custom Profiles"))
                                             .size(LabelSize::Small)
                                             .color(Color::Muted),
                                     ),
@@ -618,7 +621,7 @@ impl ManageProfilesModal {
                                         .inset(true)
                                         .spacing(ListItemSpacing::Sparse)
                                         .start_slot(Icon::new(IconName::Plus))
-                                        .child(Label::new("Add New Profile"))
+                                        .child(Label::new(ui::tr::translate("Add New Profile")))
                                         .on_click({
                                             cx.listener(move |this, _, window, cx| {
                                                 this.new_profile(None, window, cx);
@@ -728,7 +731,7 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Muted),
                                         )
-                                        .child(Label::new("Fork Profile"))
+                                        .child(Label::new(ui::tr::translate("Fork Profile")))
                                         .on_click({
                                             let profile_id = mode.profile_id.clone();
                                             cx.listener(move |this, _, window, cx| {
@@ -769,7 +772,9 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Muted),
                                         )
-                                        .child(Label::new("Configure Default Model"))
+                                        .child(Label::new(ui::tr::translate(
+                                            "Configure Default Model",
+                                        )))
                                         .on_click({
                                             let profile_id = mode.profile_id.clone();
                                             cx.listener(move |this, _, window, cx| {
@@ -810,7 +815,9 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Muted),
                                         )
-                                        .child(Label::new("Configure Built-in Tools"))
+                                        .child(Label::new(ui::tr::translate(
+                                            "Configure Built-in Tools",
+                                        )))
                                         .on_click({
                                             let profile_id = mode.profile_id.clone();
                                             cx.listener(move |this, _, window, cx| {
@@ -847,7 +854,7 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Muted),
                                         )
-                                        .child(Label::new("Configure MCP Tools"))
+                                        .child(Label::new(ui::tr::translate("Configure MCP Tools")))
                                         .on_click({
                                             let profile_id = mode.profile_id.clone();
                                             cx.listener(move |this, _, window, cx| {
@@ -884,7 +891,10 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Error),
                                         )
-                                        .child(Label::new("Delete Profile").color(Color::Error))
+                                        .child(
+                                            Label::new(ui::tr::translate("Delete Profile"))
+                                                .color(Color::Error),
+                                        )
                                         .disabled(builtin_profiles::is_builtin(&mode.profile_id))
                                         .on_click({
                                             let profile_id = mode.profile_id.clone();
@@ -918,7 +928,7 @@ impl ManageProfilesModal {
                                                 .size(IconSize::Small)
                                                 .color(Color::Muted),
                                         )
-                                        .child(Label::new("Go Back"))
+                                        .child(Label::new(ui::tr::translate("Go Back")))
                                         .end_slot(
                                             div().child(
                                                 KeyBinding::for_action_in(
@@ -970,7 +980,7 @@ impl Render for ManageProfilesModal {
                             .size(IconSize::Small)
                             .color(Color::Muted),
                     )
-                    .child(Label::new("Go Back"))
+                    .child(Label::new(ui::tr::translate("Go Back")))
                     .end_slot(
                         div().child(
                             KeyBinding::for_action_in(&menu::Cancel, &self.focus_handle, cx)
@@ -1018,7 +1028,10 @@ impl Render for ManageProfilesModal {
                     v_flex()
                         .pb_1()
                         .child(ProfileModalHeader::new(
-                            format!("{profile_name} — Configure Built-in Tools"),
+                            format!(
+                                "{profile_name} — {}",
+                                ui::tr::translate("Configure Built-in Tools")
+                            ),
                             Some(IconName::Settings),
                         ))
                         .child(ListSeparator)
@@ -1041,7 +1054,10 @@ impl Render for ManageProfilesModal {
                     v_flex()
                         .pb_1()
                         .child(ProfileModalHeader::new(
-                            format!("{profile_name} — Configure Default Model"),
+                            format!(
+                                "{profile_name} — {}",
+                                ui::tr::translate("Configure Default Model")
+                            ),
                             Some(IconName::ZedAgent),
                         ))
                         .child(ListSeparator)
@@ -1064,7 +1080,10 @@ impl Render for ManageProfilesModal {
                     v_flex()
                         .pb_1()
                         .child(ProfileModalHeader::new(
-                            format!("{profile_name} — Configure MCP Tools"),
+                            format!(
+                                "{profile_name} — {}",
+                                ui::tr::translate("Configure MCP Tools")
+                            ),
                             Some(IconName::ToolHammer),
                         ))
                         .child(ListSeparator)

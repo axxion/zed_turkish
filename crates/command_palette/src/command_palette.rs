@@ -714,7 +714,7 @@ pub fn humanize_action_name(name: &str) -> String {
     // Türkçe yama: Bilinen aksiyon adlarını doğrudan Türkçe etikete çevir.
     // Eşleşme bulunamazsa aşağıdaki mevcut insanlaştırma mantığına düşülür.
     if let Some(tr) = tr_labels::tr_tr_label(name) {
-        return tr.to_string();
+        return ui::tr::translate(tr).to_string();
     }
 
     let chars = name.chars().collect::<Vec<_>>();
@@ -780,7 +780,7 @@ pub fn humanize_action_name(name: &str) -> String {
         }
     }
 
-    result
+    ui::tr::translate(result.as_str()).to_string()
 }
 
 impl std::fmt::Debug for Command {

@@ -41,3 +41,21 @@ Bu çatal **GPL-3.0-or-later** ([LICENSE-GPL](LICENSE-GPL)) lisanslıdır; Apach
 Orijinal kaynak: [zed-industries/zed](https://github.com/zed-industries/zed) — telif hakkı Zed Industries, Inc. Tüm orijinal telif ve lisans bildirimleri korunmuştur.
 
 "Zed" adı ve logosu Zed Industries'in ticari markasıdır; bu çatalda kullanılmaz, çatal Zed Industries tarafından onaylanmamıştır.
+
+## Dil dosyası ile çeviri güncelleme (derlemesiz)
+
+Uygulama, `zed.exe` dosyasının **yanındaki** `translations.json` dosyasını çalışma zamanında okur.
+Bir metni değiştirmek için dosyaya **ekranda gördüğünüz metni anahtar olarak** ekleyin ve uygulamayı yeniden başlatın:
+
+```json
+{
+  "Open Threads Sidebar": "İleti dizileri kenar çubuğunu aç",
+  "General": "Genel",
+  "Project Search": "Proje Ara"
+}
+```
+
+- **Tooltip'ler, komut paleti, ayarlar modalı başlıkları, editör/git/arama menüleri** bu mekanizmadan geçer — derleme gerekmez.
+- Eşleşme bulunamazsa metin aynen gösterilir.
+- Yerleşik varsayılan çeviriler `crates/ui/src/tr.rs` içindeki `builtin()` haritasındadır; `translations.json` onları geçersiz kılar.
+- Çeviri kuralları ve durum için: [`TRANSLATION_GUIDE.md`](TRANSLATION_GUIDE.md)

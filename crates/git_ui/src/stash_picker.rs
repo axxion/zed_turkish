@@ -375,7 +375,7 @@ impl PickerDelegate for StashListDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a stash…".into()
+        ui::tr::translate("Select a stash…").to_string().into()
     }
 
     fn match_count(&self) -> usize {
@@ -623,7 +623,7 @@ impl PickerDelegate for StashListDelegate {
     }
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
-        Some("No stashes found".into())
+        Some(ui::tr::translate("No stashes found"))
     }
 
     fn render_footer(&self, _: &mut Window, cx: &mut Context<Picker<Self>>) -> Option<AnyElement> {

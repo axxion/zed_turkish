@@ -51,48 +51,56 @@ pub(crate) fn commit_context_menu(
         cx,
     );
     let header = match &ref_name {
-        Some(ref_name) => format!("Ref {ref_name}"),
-        None => format!("Commit {sha_short}"),
+        Some(ref_name) => format!("{} {ref_name}", ui::tr::translate("Ref")),
+        None => format!("{} {sha_short}", ui::tr::translate("Commit")),
     };
 
     ContextMenu::build(window, cx, move |context_menu, _, _| {
         context_menu
             .context(focus_handle)
             .header(header)
-            .entry("View Diff", Some(OpenCommitView.boxed_clone()), {
-                let repository = repository.clone();
-                let workspace = workspace.clone();
-                move |window, cx| {
-                    let Some(repository) = repository.clone() else {
-                        return;
-                    };
-                    CommitView::open(
-                        sha.to_string(),
-                        repository,
-                        workspace.clone(),
-                        None,
-                        None,
-                        window,
-                        cx,
-                    );
-                }
-            })
             .entry(
-                "Copy SHA",
+                ui::tr::translate("View Diff"),
+                Some(OpenCommitView.boxed_clone()),
+                {
+                    let repository = repository.clone();
+                    let workspace = workspace.clone();
+                    move |window, cx| {
+                        let Some(repository) = repository.clone() else {
+                            return;
+                        };
+                        CommitView::open(
+                            sha.to_string(),
+                            repository,
+                            workspace.clone(),
+                            None,
+                            None,
+                            window,
+                            cx,
+                        );
+                    }
+                },
+            )
+            .entry(
+                ui::tr::translate("Copy SHA"),
                 Some(CopyCommitSha.boxed_clone()),
                 move |_window, cx| {
                     cx.write_to_clipboard(ClipboardItem::new_string(sha.to_string()));
                 },
             )
             .when_some(ref_name.clone(), |menu, ref_name| {
-                menu.entry("Copy Ref Name", None, move |_window, cx| {
-                    cx.write_to_clipboard(ClipboardItem::new_string(ref_name.to_string()));
-                })
+                menu.entry(
+                    ui::tr::translate("Copy Ref Name"),
+                    None,
+                    move |_window, cx| {
+                        cx.write_to_clipboard(ClipboardItem::new_string(ref_name.to_string()));
+                    },
+                )
             })
             .when(ref_name.is_none(), |menu| {
                 menu.map(|menu| {
                     let tag_names = commit.tag_names.clone();
-                    let copy_tag_label = "Copy Tag";
+                    let copy_tag_label = ui::tr::translate("Copy Tag");
 
                     match tag_names.as_slice() {
                         [] => menu.item(
@@ -130,21 +138,27 @@ pub(crate) fn commit_context_menu(
                 })
             })
             .when(source == CommitContextMenuSource::GitPanel, |menu| {
-                menu.entry("Show in Git Graph", None, move |window, cx| {
-                    window.dispatch_action(
-                        Box::new(crate::git_graph::OpenAtCommit {
-                            sha: sha.to_string(),
-                        }),
-                        cx,
-                    );
-                })
+                menu.entry(
+                    ui::tr::translate("Show in Git Graph"),
+                    None,
+                    move |window, cx| {
+                        window.dispatch_action(
+                            Box::new(crate::git_graph::OpenAtCommit {
+                                sha: sha.to_string(),
+                            }),
+                            cx,
+                        );
+                    },
+                )
             })
             .map(|mut menu| {
-                menu = menu.separator().header("Custom Commands");
+                menu = menu
+                    .separator()
+                    .header(ui::tr::translate("Custom Commands"));
 
                 if git_tasks.is_empty() {
                     return menu.item(
-                        ContextMenuEntry::new("Learn More")
+                        ContextMenuEntry::new(ui::tr::translate("Learn More"))
                             .icon(IconName::ArrowUpRight)
                             .icon_color(Color::Muted)
                             .icon_position(IconPosition::End)

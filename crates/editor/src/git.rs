@@ -2961,7 +2961,7 @@ pub fn render_diff_hunk_controls(
         .shadow_md()
         .when(show_stage_restore, |el| {
             el.child(if status.has_secondary_hunk() {
-                Button::new(("stage", row as u64), "Stage")
+                Button::new(("stage", row as u64), ui::tr::translate("Stage"))
                     .alpha(if status.is_pending() { 0.66 } else { 1.0 })
                     .tooltip({
                         let focus_handle = editor.focus_handle(cx);
@@ -2988,7 +2988,7 @@ pub fn render_diff_hunk_controls(
                         }
                     })
             } else {
-                Button::new(("unstage", row as u64), "Unstage")
+                Button::new(("unstage", row as u64), ui::tr::translate("Unstage"))
                     .alpha(if status.is_pending() { 0.66 } else { 1.0 })
                     .tooltip({
                         let focus_handle = editor.focus_handle(cx);
@@ -3018,7 +3018,7 @@ pub fn render_diff_hunk_controls(
         })
         .when(show_stage_restore, |el| {
             el.child(
-                Button::new(("restore", row as u64), "Restore")
+                Button::new(("restore", row as u64), ui::tr::translate("Restore"))
                     .tooltip({
                         let focus_handle = editor.focus_handle(cx);
                         move |_window, cx| {

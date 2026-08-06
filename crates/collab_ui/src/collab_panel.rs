@@ -165,7 +165,7 @@ pub fn init(cx: &mut App) {
                         workspace.show_toast(
                             workspace::Toast::new(
                                 NotificationId::unique::<RoomIdCopiedToast>(),
-                                "Room ID copied to clipboard",
+                                ui::tr::translate("Room ID copied to clipboard").to_string(),
                             )
                             .autohide(),
                             cx,
@@ -369,7 +369,11 @@ impl CollabPanel {
         cx.new(|cx| {
             let filter_editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text("Search channels…", window, cx);
+                editor.set_placeholder_text(
+                    ui::tr::translate("Search channels…").as_ref(),
+                    window,
+                    cx,
+                );
                 editor
             });
 
@@ -1187,14 +1191,16 @@ impl CollabPanel {
             .current_user()
             .map(|user| user.legacy_id)
             == Some(user_id);
-        let tooltip = format!("Follow {}", user.username);
+        let tooltip = format!("{} {}", ui::tr::translate("Follow"), user.username);
 
         let is_call_admin = ActiveCall::global(cx).read(cx).room().is_some_and(|room| {
             room.read(cx).local_participant().role == proto::ChannelRole::Admin
         });
 
         let end_slot = if is_pending {
-            Label::new("Calling").color(Color::Muted).into_any_element()
+            Label::new(ui::tr::translate("Calling"))
+                .color(Color::Muted)
+                .into_any_element()
         } else if is_current_user {
             IconButton::new("leave-call", IconName::Exit)
                 .icon_size(IconSize::Small)
@@ -1202,9 +1208,11 @@ impl CollabPanel {
                 .on_click(move |_, window, cx| Self::leave_call(window, cx))
                 .into_any_element()
         } else if role == proto::ChannelRole::Guest {
-            Label::new("Guest").color(Color::Muted).into_any_element()
+            Label::new(ui::tr::translate("Guest"))
+                .color(Color::Muted)
+                .into_any_element()
         } else if role == proto::ChannelRole::Talker {
-            Label::new("Mic only")
+            Label::new(ui::tr::translate("Mic only"))
                 .color(Color::Muted)
                 .into_any_element()
         } else {
@@ -1317,7 +1325,7 @@ impl CollabPanel {
                             .color(Color::Muted),
                     ),
             )
-            .child(Label::new("Screen"))
+            .child(Label::new(ui::tr::translate("Screen")))
             .when_some(peer_id, |this, _| {
                 this.on_click(cx.listener(move |this, _, window, cx| {
                     this.workspace
@@ -1414,7 +1422,7 @@ impl CollabPanel {
         let context_menu = ContextMenu::build(window, cx, |mut context_menu, window, _| {
             if role == proto::ChannelRole::Guest {
                 context_menu = context_menu.entry(
-                    "Grant Mic Access",
+                    ui::tr::translate("Grant Mic Access"),
                     None,
                     window.handler_for(&this, move |_, window, cx| {
                         ActiveCall::global(cx)
@@ -1441,7 +1449,7 @@ impl CollabPanel {
             }
             if role == proto::ChannelRole::Guest || role == proto::ChannelRole::Talker {
                 context_menu = context_menu.entry(
-                    "Grant Write Access",
+                    ui::tr::translate("Grant Write Access"),
                     None,
                     window.handler_for(&this, move |_, window, cx| {
                         ActiveCall::global(cx)
@@ -1473,7 +1481,7 @@ impl CollabPanel {
                     "Revoke Access"
                 };
                 context_menu = context_menu.entry(
-                    label,
+                    ui::tr::translate(label),
                     None,
                     window.handler_for(&this, move |_, window, cx| {
                         ActiveCall::global(cx)
@@ -1543,7 +1551,7 @@ impl CollabPanel {
                     "Collapse Subchannels"
                 };
                 context_menu = context_menu.entry(
-                    expand_action_name,
+                    ui::tr::translate(expand_action_name),
                     None,
                     window.handler_for(&this, move |this, window, cx| {
                         this.toggle_channel_collapsed(channel_id, window, cx)
@@ -1553,21 +1561,21 @@ impl CollabPanel {
 
             context_menu = context_menu
                 .entry(
-                    "Open Notes",
+                    ui::tr::translate("Open Notes"),
                     None,
                     window.handler_for(&this, move |this, window, cx| {
                         this.open_channel_notes(channel_id, window, cx)
                     }),
                 )
                 .entry(
-                    "Copy Channel Link",
+                    ui::tr::translate("Copy Channel Link"),
                     None,
                     window.handler_for(&this, move |this, _, cx| {
                         this.copy_channel_link(channel_id, cx)
                     }),
                 )
                 .entry(
-                    "Copy Channel Notes Link",
+                    ui::tr::translate("Copy Channel Notes Link"),
                     None,
                     window.handler_for(&this, move |this, _, cx| {
                         this.copy_channel_notes_link(channel_id, cx)
@@ -1575,11 +1583,11 @@ impl CollabPanel {
                 )
                 .separator()
                 .entry(
-                    if self.is_channel_favorited(channel_id, cx) {
+                    ui::tr::translate(if self.is_channel_favorited(channel_id, cx) {
                         "Remove from Favorites"
                     } else {
                         "Add to Favorites"
-                    },
+                    }),
                     None,
                     window.handler_for(&this, move |this, _window, cx| {
                         this.toggle_favorite_channel(channel_id, cx)
@@ -1592,7 +1600,7 @@ impl CollabPanel {
                 context_menu = context_menu
                     .separator()
                     .entry(
-                        "New Subchannel",
+                        ui::tr::translate("New Subchannel"),
                         None,
                         window.handler_for(&this, move |this, window, cx| {
                             this.new_subchannel(channel_id, window, cx)
@@ -1618,7 +1626,7 @@ impl CollabPanel {
 
                 if self.channel_store.read(cx).is_root_channel(channel_id) {
                     context_menu = context_menu.separator().entry(
-                        "Manage Members",
+                        ui::tr::translate("Manage Members"),
                         None,
                         window.handler_for(&this, move |this, window, cx| {
                             this.manage_members(channel_id, window, cx)
@@ -1626,7 +1634,7 @@ impl CollabPanel {
                     )
                 } else {
                     context_menu = context_menu.entry(
-                        "Move this channel",
+                        ui::tr::translate("Move this channel"),
                         None,
                         window.handler_for(&this, move |this, window, cx| {
                             this.start_move_channel(channel_id, window, cx)
@@ -1634,7 +1642,7 @@ impl CollabPanel {
                     );
                     if self.channel_store.read(cx).is_public_channel(channel_id) {
                         context_menu = context_menu.separator().entry(
-                            "Make Channel Private",
+                            ui::tr::translate("Make Channel Private"),
                             None,
                             window.handler_for(&this, move |this, window, cx| {
                                 this.set_channel_visibility(
@@ -1647,7 +1655,7 @@ impl CollabPanel {
                         )
                     } else {
                         context_menu = context_menu.separator().entry(
-                            "Make Channel Public",
+                            ui::tr::translate("Make Channel Public"),
                             None,
                             window.handler_for(&this, move |this, window, cx| {
                                 this.set_channel_visibility(
@@ -1662,7 +1670,7 @@ impl CollabPanel {
                 }
 
                 context_menu = context_menu.entry(
-                    "Delete",
+                    ui::tr::translate("Delete"),
                     None,
                     window.handler_for(&this, move |this, window, cx| {
                         this.remove_channel(channel_id, window, cx)
@@ -1675,7 +1683,7 @@ impl CollabPanel {
                     context_menu = context_menu.separator()
                 }
                 context_menu = context_menu.entry(
-                    "Leave Channel",
+                    ui::tr::translate("Leave Channel"),
                     None,
                     window.handler_for(&this, move |this, window, cx| {
                         this.leave_channel(channel_id, window, cx)
@@ -1739,7 +1747,7 @@ impl CollabPanel {
                 });
             }
 
-            context_menu.entry("Remove Contact", None, {
+            context_menu.entry(ui::tr::translate("Remove Contact"), None, {
                 let this = this.clone();
                 move |window, cx| {
                     this.update(cx, |this, cx| {
@@ -2699,9 +2707,9 @@ impl CollabPanel {
             .size_full()
             .text_center()
             .justify_center()
-            .child(Label::new(
+            .child(Label::new(ui::tr::translate(
                 "Collaboration is disabled for this organization.",
-            ))
+            )))
     }
 
     fn render_signed_out(&mut self, cx: &mut Context<Self>) -> Div {
@@ -2738,9 +2746,9 @@ impl CollabPanel {
             .size_full()
             .text_center()
             .justify_center()
-            .child(Label::new(collab_blurb))
+            .child(Label::new(ui::tr::translate(collab_blurb)))
             .child(
-                Button::new(button_id, button_label)
+                Button::new(button_id, ui::tr::translate(button_label))
                     .full_width()
                     .start_icon(Icon::new(button_icon).color(Color::Muted))
                     .style(ButtonStyle::Outlined)
@@ -2987,16 +2995,16 @@ impl CollabPanel {
                 if let Some(name) = channel_name {
                     name
                 } else {
-                    SharedString::from("Current Call")
+                    SharedString::from(ui::tr::translate("Current Call"))
                 }
             }
-            Section::FavoriteChannels => SharedString::from("Favorites"),
-            Section::ContactRequests => SharedString::from("Requests"),
-            Section::Contacts => SharedString::from("Contacts"),
-            Section::Channels => SharedString::from("Channels"),
-            Section::ChannelInvites => SharedString::from("Invites"),
-            Section::Online => SharedString::from("Online"),
-            Section::Offline => SharedString::from("Offline"),
+            Section::FavoriteChannels => ui::tr::translate("Favorites"),
+            Section::ContactRequests => ui::tr::translate("Requests"),
+            Section::Contacts => ui::tr::translate("Contacts"),
+            Section::Channels => ui::tr::translate("Channels"),
+            Section::ChannelInvites => ui::tr::translate("Invites"),
+            Section::Online => ui::tr::translate("Online"),
+            Section::Offline => ui::tr::translate("Offline"),
         };
 
         let auto_watch_state = self
@@ -3176,7 +3184,7 @@ impl CollabPanel {
                             .child(render_participant_name_and_handle(&contact.user)),
                     )
                     .when(calling, |el| {
-                        el.child(Label::new("Calling…").color(Color::Muted))
+                        el.child(Label::new(ui::tr::translate("Calling…")).color(Color::Muted))
                     })
                     .when(!calling, |el| {
                         el.child(
@@ -3347,7 +3355,7 @@ impl CollabPanel {
     fn render_contact_placeholder(&self, is_selected: bool, cx: &mut Context<Self>) -> ListItem {
         ListItem::new("contact-placeholder")
             .child(Icon::new(IconName::Plus))
-            .child(Label::new("Add a Contact"))
+            .child(Label::new(ui::tr::translate("Add a Contact")))
             .focused(is_selected)
             .dock(self.dock_side(cx))
             .on_click(cx.listener(|this, _, window, cx| this.toggle_contact_finder(window, cx)))

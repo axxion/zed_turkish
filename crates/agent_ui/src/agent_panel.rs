@@ -5508,7 +5508,7 @@ impl AgentPanel {
     fn show_no_thread_summary_model_toast(workspace: Entity<Workspace>, cx: &mut App) {
         workspace.update(cx, |workspace, cx| {
             let toast = StatusToast::new(
-                "No model is configured for summarizing thread titles.",
+                ui::tr::translate("No model is configured for summarizing thread titles."),
                 cx,
                 |this, _cx| {
                     this.icon(

@@ -476,7 +476,8 @@ impl ActivityIndicator {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Download),
                 message: format!(
-                    "Downloading {}...",
+                    "{} {}...",
+                    ui::tr::translate("Downloading"),
                     downloading.iter().map(|name| name.as_ref()).fold(
                         String::new(),
                         |mut acc, s| {
@@ -501,7 +502,8 @@ impl ActivityIndicator {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Download),
                 message: format!(
-                    "Checking for updates to {}...",
+                    "{} {}...",
+                    ui::tr::translate("Checking for updates to"),
                     checking_for_update.iter().map(|name| name.as_ref()).fold(
                         String::new(),
                         |mut acc, s| {
@@ -526,7 +528,8 @@ impl ActivityIndicator {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Warning),
                 message: format!(
-                    "Failed to run {}. Click to show error.",
+                    "{} {}. {}",
+                    ui::tr::translate("Failed to run"),
                     failed
                         .iter()
                         .map(|name| name.as_ref())
@@ -537,6 +540,7 @@ impl ActivityIndicator {
                             acc.push_str(s);
                             acc
                         }),
+                    ui::tr::translate("Click to show error.")
                 ),
                 on_click: Some(Arc::new(|this, window, cx| {
                     this.show_error_message(&ShowErrorMessage, window, cx)
@@ -549,7 +553,12 @@ impl ActivityIndicator {
         if let Some(failure) = self.project.read(cx).last_formatting_failure(cx) {
             return Some(Content {
                 icon: ActivityIcon::Icon(IconName::Warning),
-                message: format!("Formatting failed: {failure}. Click to see logs."),
+                message: format!(
+                    "{} {}. {}",
+                    ui::tr::translate("Formatting failed:"),
+                    failure,
+                    ui::tr::translate("Click to see logs.")
+                ),
                 on_click: Some(Arc::new(|indicator, window, cx| {
                     indicator.project.update(cx, |project, cx| {
                         project.reset_last_formatting_failure(cx);

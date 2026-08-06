@@ -355,7 +355,7 @@ impl Editor {
                     Editor::open_locations_in_multibuffer(
                         workspace,
                         locations,
-                        "Bookmarks".into(),
+                        ui::tr::translate("Bookmarks").to_string(),
                         false,
                         false,
                         MultibufferSelectionMode::First,

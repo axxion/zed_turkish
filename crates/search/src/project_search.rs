@@ -1,7 +1,6 @@
 use crate::{
-    BufferSearchBar, EXCLUDE_PLACEHOLDER, FocusSearch, HighlightKey, INCLUDE_PLACEHOLDER,
-    NextHistoryQuery, PreviousHistoryQuery, REPLACE_PLACEHOLDER, ReplaceAll, ReplaceNext,
-    SearchOption, SearchOptions, SearchSource, SelectNextMatch, SelectPreviousMatch,
+    BufferSearchBar, FocusSearch, HighlightKey, NextHistoryQuery, PreviousHistoryQuery, ReplaceAll,
+    ReplaceNext, SearchOption, SearchOptions, SearchSource, SelectNextMatch, SelectPreviousMatch,
     ToggleCaseSensitive, ToggleIncludeIgnored, ToggleRegex, ToggleReplace, ToggleWholeWord,
     buffer_search::Deploy,
     search_bar::{
@@ -630,10 +629,14 @@ impl Render for ProjectSearchView {
             let model = self.entity.read(cx);
 
             let heading_text = match model.search_state {
-                SearchState::Running(SearchActivity::WaitingForScan) => "Loading project…",
-                SearchState::Running(SearchActivity::Searching) => "Searching…",
-                SearchState::Completed(SearchCompletion::NoResults) => "No Results",
-                _ => "Search All Files",
+                SearchState::Running(SearchActivity::WaitingForScan) => {
+                    ui::tr::translate("Loading project…")
+                }
+                SearchState::Running(SearchActivity::Searching) => ui::tr::translate("Searching…"),
+                SearchState::Completed(SearchCompletion::NoResults) => {
+                    ui::tr::translate("No Results")
+                }
+                _ => ui::tr::translate("Search All Files"),
             };
 
             let heading_text = div()
@@ -643,9 +646,11 @@ impl Render for ProjectSearchView {
             let page_content: Option<AnyElement> = match model.search_state {
                 SearchState::Idle => Some(self.landing_text_minor(cx).into_any_element()),
                 SearchState::Completed(SearchCompletion::NoResults) => Some(
-                    Label::new("No results found in this project for the provided query")
-                        .size(LabelSize::Small)
-                        .into_any_element(),
+                    Label::new(ui::tr::translate(
+                        "No results found in this project for the provided query",
+                    ))
+                    .size(LabelSize::Small)
+                    .into_any_element(),
                 ),
                 _ => None,
             };
@@ -688,7 +693,7 @@ impl Item for ProjectSearchView {
             .is_empty()
             .not()
             .then(|| query_text.into())
-            .or_else(|| Some("Project Search".into()))
+            .or_else(|| Some(ui::tr::translate("Project Search")))
     }
 
     fn act_as_type<'a>(
@@ -732,7 +737,7 @@ impl Item for ProjectSearchView {
 
         last_query
             .filter(|query| !query.is_empty())
-            .unwrap_or_else(|| "Project Search".into())
+            .unwrap_or_else(|| ui::tr::translate("Project Search"))
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -1059,7 +1064,7 @@ impl ProjectSearchView {
 
         let query_editor = cx.new(|cx| {
             let mut editor = Editor::auto_height(1, 4, window, cx);
-            editor.set_placeholder_text("Search all files…", window, cx);
+            editor.set_placeholder_text(&ui::tr::translate("Search all files…"), window, cx);
             editor.set_use_autoclose(false);
             editor.set_use_selection_highlight(false);
             editor.set_text(query_text, window, cx);
@@ -1084,7 +1089,7 @@ impl ProjectSearchView {
         );
         let replacement_editor = cx.new(|cx| {
             let mut editor = Editor::auto_height(1, 4, window, cx);
-            editor.set_placeholder_text(REPLACE_PLACEHOLDER, window, cx);
+            editor.set_placeholder_text(&ui::tr::translate("Replace in project…"), window, cx);
             if let Some(text) = replacement_text {
                 editor.set_text(text, window, cx);
             }
@@ -1114,7 +1119,11 @@ impl ProjectSearchView {
 
         let included_files_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text(INCLUDE_PLACEHOLDER, window, cx);
+            editor.set_placeholder_text(
+                &ui::tr::translate("Include: e.g. src/**/*.rs"),
+                window,
+                cx,
+            );
 
             editor
         });
@@ -1127,7 +1136,11 @@ impl ProjectSearchView {
 
         let excluded_files_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text(EXCLUDE_PLACEHOLDER, window, cx);
+            editor.set_placeholder_text(
+                &ui::tr::translate("Exclude: e.g. vendor/*, *.lock"),
+                window,
+                cx,
+            );
 
             editor
         });
@@ -1838,20 +1851,23 @@ impl ProjectSearchView {
         v_flex()
             .gap_1()
             .child(
-                Label::new("Hit enter to search. For more options:")
+                Label::new(ui::tr::translate("Hit enter to search. For more options:"))
                     .color(Color::Muted)
                     .mb_2(),
             )
             .child(
-                Button::new("filter-paths", "Include/exclude specific paths")
-                    .start_icon(Icon::new(IconName::Filter).size(IconSize::Small))
-                    .key_binding(KeyBinding::for_action_in(&ToggleFilters, &focus_handle, cx))
-                    .on_click(|_event, window, cx| {
-                        window.dispatch_action(ToggleFilters.boxed_clone(), cx)
-                    }),
+                Button::new(
+                    "filter-paths",
+                    ui::tr::translate("Include/exclude specific paths"),
+                )
+                .start_icon(Icon::new(IconName::Filter).size(IconSize::Small))
+                .key_binding(KeyBinding::for_action_in(&ToggleFilters, &focus_handle, cx))
+                .on_click(|_event, window, cx| {
+                    window.dispatch_action(ToggleFilters.boxed_clone(), cx)
+                }),
             )
             .child(
-                Button::new("find-replace", "Find and replace")
+                Button::new("find-replace", ui::tr::translate("Find and replace"))
                     .start_icon(Icon::new(IconName::Replace).size(IconSize::Small))
                     .key_binding(KeyBinding::for_action_in(&ToggleReplace, &focus_handle, cx))
                     .on_click(|_event, window, cx| {
@@ -1859,7 +1875,7 @@ impl ProjectSearchView {
                     }),
             )
             .child(
-                Button::new("regex", "Match with regex")
+                Button::new("regex", ui::tr::translate("Match with regex"))
                     .start_icon(Icon::new(IconName::Regex).size(IconSize::Small))
                     .key_binding(KeyBinding::for_action_in(&ToggleRegex, &focus_handle, cx))
                     .on_click(|_event, window, cx| {
@@ -1867,7 +1883,7 @@ impl ProjectSearchView {
                     }),
             )
             .child(
-                Button::new("match-case", "Match case")
+                Button::new("match-case", ui::tr::translate("Match case"))
                     .start_icon(Icon::new(IconName::CaseSensitive).size(IconSize::Small))
                     .key_binding(KeyBinding::for_action_in(
                         &ToggleCaseSensitive,
@@ -1879,7 +1895,7 @@ impl ProjectSearchView {
                     }),
             )
             .child(
-                Button::new("match-whole-words", "Match whole words")
+                Button::new("match-whole-words", ui::tr::translate("Match whole words"))
                     .start_icon(Icon::new(IconName::WholeWord).size(IconSize::Small))
                     .key_binding(KeyBinding::for_action_in(
                         &ToggleWholeWord,

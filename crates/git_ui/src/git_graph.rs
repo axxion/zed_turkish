@@ -147,7 +147,7 @@ impl PickerDelegate for CommitTagPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Copy Tag".into()
+        ui::tr::translate("Copy Tag").to_string().into()
     }
 
     fn match_count(&self) -> usize {
@@ -1472,7 +1472,7 @@ impl GitGraph {
 
         let search_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search commits…", window, cx);
+            editor.set_placeholder_text(&ui::tr::translate("Search commits…"), window, cx);
             editor
         });
 
@@ -2508,14 +2508,16 @@ impl GitGraph {
         let focus_handle = self.focus_handle.clone();
         let git_graph = cx.entity();
         let context_menu = ContextMenu::build(window, cx, |mut context_menu, _window, _cx| {
-            context_menu = context_menu.context(focus_handle).header("Columns");
+            context_menu = context_menu
+                .context(focus_handle)
+                .header(ui::tr::translate("Columns"));
             for (col_idx, label) in columns.iter().enumerate() {
                 let is_visible = !filter.get(col_idx).copied().unwrap_or(false);
                 // Disable hiding the last remaining visible column.
                 let can_toggle = !is_visible || visible_count > 1;
                 let git_graph = git_graph.clone();
                 context_menu = context_menu.toggleable_entry_disabled_when(
-                    label.to_string(),
+                    ui::tr::translate(*label).to_string(),
                     is_visible,
                     !can_toggle,
                     IconPosition::End,
@@ -2988,7 +2990,11 @@ impl GitGraph {
                                 this.child(
                                     Button::new(
                                         "view-on-provider",
-                                        format!("View on {}", provider_name),
+                                        format!(
+                                            "{} {}",
+                                            ui::tr::translate("View on"),
+                                            provider_name
+                                        ),
                                     )
                                     .start_icon(
                                         Icon::new(icon).size(IconSize::Small).color(Color::Muted),
@@ -3143,7 +3149,7 @@ impl GitGraph {
             .child(Divider::horizontal())
             .child(
                 h_flex().p_1p5().w_full().child(
-                    Button::new("view-commit", "View Commit")
+                    Button::new("view-commit", ui::tr::translate("View Commit"))
                         .full_width()
                         .start_icon(
                             Icon::new(IconName::GitCommit)
@@ -3716,11 +3722,11 @@ impl Render for GitGraph {
 
         let content = if commit_count == 0 {
             let message = if let Some(error) = &error {
-                format!("Error loading: {}", error)
+                format!("{}: {}", ui::tr::translate("Error loading"), error)
             } else if is_loading {
-                "Loading".to_string()
+                ui::tr::translate("Loading").to_string()
             } else {
-                "No commits found".to_string()
+                ui::tr::translate("No commits found").to_string()
             };
             let label = Label::new(message)
                 .color(Color::Muted)
@@ -3795,20 +3801,20 @@ impl Render for GitGraph {
                                     if !is_path_history {
                                         TableRow::from_vec(
                                             vec![
-                                                Label::new("Graph")
+                                                Label::new(ui::tr::translate("Graph"))
                                                     .color(Color::Muted)
                                                     .truncate()
                                                     .into_any_element(),
-                                                Label::new("Description")
+                                                Label::new(ui::tr::translate("Description"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Date")
+                                                Label::new(ui::tr::translate("Date"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Author")
+                                                Label::new(ui::tr::translate("Author"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Commit")
+                                                Label::new(ui::tr::translate("Commit"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
                                             ],
@@ -3817,16 +3823,16 @@ impl Render for GitGraph {
                                     } else {
                                         TableRow::from_vec(
                                             vec![
-                                                Label::new("Description")
+                                                Label::new(ui::tr::translate("Description"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Date")
+                                                Label::new(ui::tr::translate("Date"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Author")
+                                                Label::new(ui::tr::translate("Author"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Commit")
+                                                Label::new(ui::tr::translate("Commit"))
                                                     .color(Color::Muted)
                                                     .into_any_element(),
                                             ],

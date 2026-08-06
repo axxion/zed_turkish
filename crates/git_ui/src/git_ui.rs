@@ -553,7 +553,7 @@ impl RefPickerModal {
     ) -> Self {
         let editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Enter git ref...", window, cx);
+            editor.set_placeholder_text(&ui::tr::translate("Enter git ref..."), window, cx);
             editor
         });
 
@@ -836,7 +836,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Fetch",
+            ui::tr::translate("Fetch"),
             0,
             0,
             Some(IconName::ArrowCircle),
@@ -867,7 +867,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Push",
+            ui::tr::translate("Push"),
             ahead as usize,
             0,
             None,
@@ -899,7 +899,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Pull",
+            ui::tr::translate("Pull"),
             ahead as usize,
             behind as usize,
             None,
@@ -929,7 +929,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Publish",
+            ui::tr::translate("Publish"),
             0,
             0,
             Some(IconName::ExpandUp),
@@ -959,7 +959,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Republish",
+            ui::tr::translate("Republish"),
             0,
             0,
             Some(IconName::ExpandUp),
@@ -1025,14 +1025,23 @@ mod remote_button {
                         .when_some(keybinding_target.clone(), |el, keybinding_target| {
                             el.context(keybinding_target)
                         })
-                        .action("Fetch", git::Fetch.boxed_clone())
-                        .action("Fetch From", git::FetchFrom.boxed_clone())
-                        .action("Pull", git::Pull.boxed_clone())
-                        .action("Pull (Rebase)", git::PullRebase.boxed_clone())
+                        .action(ui::tr::translate("Fetch"), git::Fetch.boxed_clone())
+                        .action(
+                            ui::tr::translate("Fetch From"),
+                            git::FetchFrom.boxed_clone(),
+                        )
+                        .action(ui::tr::translate("Pull"), git::Pull.boxed_clone())
+                        .action(
+                            ui::tr::translate("Pull (Rebase)"),
+                            git::PullRebase.boxed_clone(),
+                        )
                         .separator()
-                        .action("Push", git::Push.boxed_clone())
-                        .action("Push To", git::PushTo.boxed_clone())
-                        .action("Force Push", git::ForcePush.boxed_clone())
+                        .action(ui::tr::translate("Push"), git::Push.boxed_clone())
+                        .action(ui::tr::translate("Push To"), git::PushTo.boxed_clone())
+                        .action(
+                            ui::tr::translate("Force Push"),
+                            git::ForcePush.boxed_clone(),
+                        )
                 }))
             })
             .anchor(Anchor::TopRight)
@@ -1243,7 +1252,7 @@ impl GitCloneModal {
     pub fn show(panel: Entity<GitPanel>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let repo_input = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Enter repository URL…", window, cx);
+            editor.set_placeholder_text(&ui::tr::translate("Enter repository URL…"), window, cx);
             editor
         });
         let focus_handle = repo_input.focus_handle(cx);
@@ -1287,12 +1296,14 @@ impl Render for GitCloneModal {
                     .rounded_b_sm()
                     .bg(cx.theme().colors().editor_background)
                     .child(
-                        Label::new("Clone a repository from GitHub or other sources.")
-                            .color(Color::Muted)
-                            .size(LabelSize::Small),
+                        Label::new(ui::tr::translate(
+                            "Clone a repository from GitHub or other sources.",
+                        ))
+                        .color(Color::Muted)
+                        .size(LabelSize::Small),
                     )
                     .child(
-                        Button::new("learn-more", "Learn More")
+                        Button::new("learn-more", ui::tr::translate("Learn More"))
                             .label_size(LabelSize::Small)
                             .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::XSmall))
                             .on_click(|_, _, cx| {

@@ -153,14 +153,14 @@ impl TerminalPanel {
                                 let menu = ContextMenu::build(window, cx, |menu, _, _| {
                                     menu.context(focus_handle.clone())
                                         .action(
-                                            "New Terminal",
+                                            ui::tr::translate("New Terminal"),
                                             workspace::NewTerminal::default().boxed_clone(),
                                         )
                                         // We want the focus to go back to terminal panel once task modal is dismissed,
                                         // hence we focus that first. Otherwise, we'd end up without a focused element, as
                                         // context menu will be gone the moment we spawn the modal.
                                         .action(
-                                            "Spawn Task",
+                                            ui::tr::translate("Spawn Task"),
                                             zed_actions::Spawn::modal().boxed_clone(),
                                         )
                                 });
@@ -189,10 +189,22 @@ impl TerminalPanel {
                                             split_context.clone(),
                                             |menu, split_context| menu.context(split_context),
                                         )
-                                        .action("Split Right", SplitRight::default().boxed_clone())
-                                        .action("Split Left", SplitLeft::default().boxed_clone())
-                                        .action("Split Up", SplitUp::default().boxed_clone())
-                                        .action("Split Down", SplitDown::default().boxed_clone())
+                                        .action(
+                                            ui::tr::translate("Split Right"),
+                                            SplitRight::default().boxed_clone(),
+                                        )
+                                        .action(
+                                            ui::tr::translate("Split Left"),
+                                            SplitLeft::default().boxed_clone(),
+                                        )
+                                        .action(
+                                            ui::tr::translate("Split Up"),
+                                            SplitUp::default().boxed_clone(),
+                                        )
+                                        .action(
+                                            ui::tr::translate("Split Down"),
+                                            SplitDown::default().boxed_clone(),
+                                        )
                                     })
                                     .into()
                                 }
@@ -1307,9 +1319,12 @@ impl Render for FailedToSpawnTerminal {
             .menu(move |window, cx| {
                 Some(ContextMenu::build(window, cx, |context_menu, _, _| {
                     context_menu
-                        .action("Open Settings", zed_actions::OpenSettings.boxed_clone())
                         .action(
-                            "Edit settings.json",
+                            ui::tr::translate("Open Settings"),
+                            zed_actions::OpenSettings.boxed_clone(),
+                        )
+                        .action(
+                            ui::tr::translate("Edit settings.json"),
                             zed_actions::OpenSettingsFile.boxed_clone(),
                         )
                 }))
@@ -1333,7 +1348,7 @@ impl Render for FailedToSpawnTerminal {
                     .items_center()
                     .justify_center()
                     .text_center()
-                    .child(Label::new("Failed to spawn terminal"))
+                    .child(Label::new(ui::tr::translate("Failed to spawn terminal")))
                     .child(
                         Label::new(self.error.to_string())
                             .size(LabelSize::Small)
@@ -1342,7 +1357,10 @@ impl Render for FailedToSpawnTerminal {
                     )
                     .child(SplitButton::new(
                         ButtonLike::new("open-settings-ui")
-                            .child(Label::new("Edit Settings").size(LabelSize::Small))
+                            .child(
+                                Label::new(ui::tr::translate("Edit Settings"))
+                                    .size(LabelSize::Small),
+                            )
                             .on_click(|_, window, cx| {
                                 window.dispatch_action(zed_actions::OpenSettings.boxed_clone(), cx);
                             }),
@@ -1358,7 +1376,7 @@ impl workspace::Item for FailedToSpawnTerminal {
     type Event = ();
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        SharedString::new_static("Failed to spawn terminal")
+        ui::tr::translate("Failed to spawn terminal")
     }
 }
 

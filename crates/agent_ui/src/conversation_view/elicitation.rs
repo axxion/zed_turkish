@@ -1975,53 +1975,65 @@ impl<'a> ElicitationCard<'a> {
             .border_t_1()
             .border_color(border_color)
             .child(
-                Button::new(("elicitation-accept", self.entry_ix), accept_label)
-                    .start_icon(
-                        Icon::new(accept_icon)
-                            .size(IconSize::XSmall)
-                            .color(accept_icon_color),
-                    )
-                    .label_size(LabelSize::Small)
-                    .disabled(is_submitting)
-                    .on_click(move |_, window, cx| {
-                        if let Some(url) = &open_url {
-                            on_open_url(submit_id.clone(), url.clone(), window, cx);
-                            if !is_accepted_url {
-                                on_submit(submit_id.clone(), window, cx);
-                            }
-                        } else {
+                Button::new(
+                    ("elicitation-accept", self.entry_ix),
+                    ui::tr::translate(accept_label),
+                )
+                .start_icon(
+                    Icon::new(accept_icon)
+                        .size(IconSize::XSmall)
+                        .color(accept_icon_color),
+                )
+                .label_size(LabelSize::Small)
+                .disabled(is_submitting)
+                .on_click(move |_, window, cx| {
+                    if let Some(url) = &open_url {
+                        on_open_url(submit_id.clone(), url.clone(), window, cx);
+                        if !is_accepted_url {
                             on_submit(submit_id.clone(), window, cx);
                         }
-                    }),
+                    } else {
+                        on_submit(submit_id.clone(), window, cx);
+                    }
+                }),
             )
             .when(!is_accepted_url, |this| {
                 this.child(
-                    Button::new(("elicitation-decline", self.entry_ix), "Decline")
-                        .start_icon(
-                            Icon::new(IconName::Close)
-                                .size(IconSize::XSmall)
-                                .color(Color::Error),
-                        )
-                        .label_size(LabelSize::Small)
-                        .on_click(move |_, window, cx| {
-                            on_decline(decline_id.clone(), window, cx);
-                        }),
+                    Button::new(
+                        ("elicitation-decline", self.entry_ix),
+                        ui::tr::translate("Decline"),
+                    )
+                    .start_icon(
+                        Icon::new(IconName::Close)
+                            .size(IconSize::XSmall)
+                            .color(Color::Error),
+                    )
+                    .label_size(LabelSize::Small)
+                    .on_click(move |_, window, cx| {
+                        on_decline(decline_id.clone(), window, cx);
+                    }),
                 )
                 .child(
-                    Button::new(("elicitation-cancel", self.entry_ix), "Cancel")
-                        .label_size(LabelSize::Small)
-                        .on_click(move |_, window, cx| {
-                            on_cancel(cancel_id.clone(), window, cx);
-                        }),
+                    Button::new(
+                        ("elicitation-cancel", self.entry_ix),
+                        ui::tr::translate("Cancel"),
+                    )
+                    .label_size(LabelSize::Small)
+                    .on_click(move |_, window, cx| {
+                        on_cancel(cancel_id.clone(), window, cx);
+                    }),
                 )
             })
             .when(is_accepted_url, |this| {
                 this.child(
-                    Button::new(("elicitation-dismiss-url", self.entry_ix), "Cancel")
-                        .label_size(LabelSize::Small)
-                        .on_click(move |_, window, cx| {
-                            on_dismiss_url(dismiss_id.clone(), window, cx);
-                        }),
+                    Button::new(
+                        ("elicitation-dismiss-url", self.entry_ix),
+                        ui::tr::translate("Cancel"),
+                    )
+                    .label_size(LabelSize::Small)
+                    .on_click(move |_, window, cx| {
+                        on_dismiss_url(dismiss_id.clone(), window, cx);
+                    }),
                 )
             })
             .into_any_element()
