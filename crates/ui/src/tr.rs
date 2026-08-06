@@ -1118,6 +1118,9 @@ fn builtin(text: &str) -> Option<&'static str> {
         "Body Text" => "Gövde Metni",
         "Wrapping Text" => "Kaydırılan Metin",
 
+        // ── Pencere başlığı ───────────────────────────────────────────────
+        "empty project" => "boş proje",
+
         _ => return None,
     })
 }
