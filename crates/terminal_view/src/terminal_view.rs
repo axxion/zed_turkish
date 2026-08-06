@@ -1725,7 +1725,7 @@ impl Item for TerminalView {
     ) -> Vec<(SharedString, Box<dyn gpui::Action>)> {
         let terminal = self.terminal.read(cx);
         if terminal.task().is_none() {
-            vec!["Yeniden Adlandır".into(), Box::new(RenameTerminal)]
+            vec![("Yeniden Adlandır".into(), Box::new(RenameTerminal))]
         } else {
             Vec::new()
         }
