@@ -512,6 +512,612 @@ fn builtin(text: &str) -> Option<&'static str> {
         "Copy Message" => "Mesajı Kopyala",
         "Select All" => "Tümünü Seç",
         "Symbolic Link" => "Sembolik Bağlantı",
+
+        // ── Ajan protokolü / bağlantılar ──────────────────────────────────
+        "Clear Messages" => "Mesajları Temizle",
+        "No active connections" => "Etkin bağlantı yok",
+        "Restart Connection" => "Bağlantıyı Yeniden Başlat",
+        "Web Search Failed" => "Web Araması Başarısız",
+        "Enter client secret (leave empty for public clients)" => {
+            "İstemci gizli anahtarını girin (herkese açık istemciler için boş bırakın)"
+        }
+        "Profile name" => "Profil adı",
+        "Agent Diff" => "Ajan Farkı",
+        "ACP Registry" => "ACP Kayıt Defteri",
+        "Missing registry entry." => "Kayıt defteri girdisi eksik.",
+        "Not supported on this platform" => "Bu platformda desteklenmiyor",
+        "Search agents..." => "Ajanları ara...",
+        "Search this thread…" => "Bu konuşmada ara…",
+        "What went wrong? Share your feedback so we can improve." => {
+            "Ne ters gitti? Geliştirebilmemiz için geri bildiriminizi paylaşın."
+        }
+        "Add a prompt…" => "Bir istem ekle…",
+        "Paste as Plain Text" => "Düz Metin Olarak Yapıştır",
+        "Change Mode" => "Modu Değiştir",
+        "Cycle Through Modes" => "Modlar Arasında Geç",
+        "Change Profile" => "Profili Değiştir",
+        "Cycle Through Profiles" => "Profiller Arasında Geç",
+        "Disabled in Restricted Mode" => "Kısıtlı Modda devre dışı",
+        "Restricted Mode" => "Kısıtlı Mod",
+        "Some tools are disabled. Click to review trust settings." => {
+            "Bazı araçlar devre dışı. Güven ayarlarını gözden geçirmek için tıklayın."
+        }
+        "This model does not support tools." => "Bu model araçları desteklemiyor.",
+        "Tools Unsupported" => "Araçlar Desteklenmiyor",
+        "Fetching Agent Threads…" => "Ajan konuşmaları getiriliyor…",
+        "No external agents available." => "Kullanılabilir dış ajan yok.",
+        "Cancel Restore" => "Geri Yüklemeyi İptal Et",
+        "Choose from Local Folders" => "Yerel Klasörlerden Seç",
+        "Clear Search" => "Aramayı Temizle",
+        "Import Threads" => "Konuşmaları İçe Aktar",
+        "Search all threads…" => "Tüm konuşmalarda ara…",
+        "Start New Agent Thread" => "Yeni Ajan Konuşması Başlat",
+        "Change Model" => "Modeli Değiştir",
+        "Cycle Favorite Models" => "Favori Modeller Arasında Geç",
+        "Sandboxing is disabled for this thread" => "Bu konuşma için sandbox devre dışı",
+        "You have sandboxing disabled in settings." => {
+            "Ayarlarda sandbox'ı devre dışı bıraktınız."
+        }
+        "Thread has an Error" => "Konuşmada Hata Var",
+        "Waiting for Confirmation" => "Onay Bekleniyor",
+        "Choose one of the following authentication options:" => {
+            "Aşağıdaki kimlik doğrulama seçeneklerinden birini seçin:"
+        }
+        "Subagents Awaiting Permission:" => "İzin Bekleyen Alt Ajanlar:",
+        "Scroll to Subagent" => "Alt Ajana Kaydır",
+
+        // ── Plan / abonelik ───────────────────────────────────────────────
+        "API Keys" => "API Anahtarları",
+        "Configure Providers" => "Sağlayıcıları Yapılandır",
+        "Start now using API keys from your environment for the following providers:" => {
+            "Aşağıdaki sağlayıcılar için ortamınızdaki API anahtarlarıyla hemen başlayın:"
+        }
+        "Get Started" => "Başla",
+        "Here's what you get for the next 14 days:" => "Önümüzdeki 14 gün boyunca elde edecekleriniz:",
+        "Here's what you get:" => "Elde edecekleriniz:",
+        "Pro Trial" => "Pro Deneme",
+        "Sign in to try Zed Pro free for 14 days." => {
+            "Zed Pro'yu 14 gün ücretsiz denemek için giriş yapın."
+        }
+        "Start Free Trial" => "Ücretsiz Denemeyi Başlat",
+        "Try Zed Pro for Free" => "Zed Pro'yu Ücretsiz Dene",
+        "Welcome to the Zed Pro Trial" => "Zed Pro Denemesine Hoş Geldiniz",
+        "Welcome to Zed AI" => "Zed AI'ya Hoş Geldiniz",
+        "Welcome to Zed Business" => "Zed Business'a Hoş Geldiniz",
+        "Welcome to Zed Pro" => "Zed Pro'ya Hoş Geldiniz",
+        "Welcome to Zed Student" => "Zed Student'a Hoş Geldiniz",
+        "Welcome to Zed VIP" => "Zed VIP'ye Hoş Geldiniz",
+        "$10 of tokens in Zed agent" => "Zed ajanında 10 $ değerinde token",
+        "$20 of tokens in Zed agent" => "Zed ajanında 20 $ değerinde token",
+        "$5 of tokens in Zed agent" => "Zed ajanında 5 $ değerinde token",
+        "2,000 accepted edit predictions" => "2.000 kabul edilmiş düzenleme tahmini",
+        "No credit card required" => "Kredi kartı gerekmez",
+        "Tokens in the Zed agent" => "Zed ajanında token",
+        "Unlimited edit predictions" => "Sınırsız düzenleme tahmini",
+        "Unlimited use of external agents" => "Dış ajanların sınırsız kullanımı",
+        "Usage-based billing" => "Kullanıma dayalı faturalandırma",
+        "Usage-based billing beyond $5" => "5 $ üzerinde kullanıma dayalı faturalandırma",
+        "(Current Plan)" => "(Geçerli Plan)",
+        "Upgrade to Zed Pro" => "Zed Pro'ya Yükselt",
+        "Your Zed Pro Trial has expired" => "Zed Pro deneme süreniz doldu",
+        "You've been automatically reset to the Free plan." => {
+            "Otomatik olarak Ücretsiz plana döndürüldünüz."
+        }
+        "Manage Subscription" => "Aboneliği Yönet",
+        "Sign In to use Zed AI" => "Zed AI kullanmak için Giriş Yap",
+        "Start 14-day Free Pro Trial" => "14 Günlük Ücretsiz Pro Denemesini Başlat",
+        "Upgrade to Pro" => "Pro'ya Yükselt",
+
+        // ── İşbirliği (ek) ────────────────────────────────────────────────
+        "Join Channel" => "Kanala Katıl",
+        "Clear Filter" => "Filtreyi temizle",
+        "Search for New Contact" => "Yeni kişi ara",
+        "Create Channel" => "Kanal oluştur",
+        "Decline invite" => "Daveti reddet",
+        "Accept invite" => "Daveti kabul et",
+        "Cancel invite" => "Daveti iptal et",
+        "Open Shared Screen" => "Paylaşılan ekranı aç",
+        "Open Channel Notes" => "Kanal notlarını aç",
+        "Ignore" => "Yok say",
+
+        // ── Kısayol / komut paleti (ek) ───────────────────────────────────
+        "Add Keybinding…" => "Kısayol Ekle…",
+        "Change Keybinding…" => "Kısayolu Değiştir…",
+        "Action Arguments" => "Eylem Argümanları",
+        "Copy Action" => "Eylemi Kopyala",
+        "Edit Context" => "Bağlamı Düzenle",
+        "Edit in JSON" => "JSON'da Düzenle",
+        "This action is unbound" => "Bu eylem bağlı değil",
+
+        // ── Copilot ───────────────────────────────────────────────────────
+        "An Error Happened" => "Bir Hata Oluştu",
+        "Authenticate To Use" => "Kullanmak İçin Kimlik Doğrula",
+        "Copilot Enabled!" => "Copilot Etkinleştirildi!",
+        "Paste this code into GitHub after clicking the button below." => {
+            "Aşağıdaki düğmeye tıkladıktan sonra bu kodu GitHub'a yapıştırın."
+        }
+        "Reinstall Copilot and Sign In" => "Copilot'u Yeniden Kur ve Giriş Yap",
+        "Subscribe on GitHub" => "GitHub'da Abone Ol",
+        "Use GitHub Copilot in Zed" => "Zed'de GitHub Copilot kullan",
+        "Using Copilot requires an active subscription on GitHub." => {
+            "Copilot kullanmak GitHub'da etkin bir abonelik gerektirir."
+        }
+        "You must have an active GitHub Copilot subscription." => {
+            "Etkin bir GitHub Copilot aboneliğiniz olmalı."
+        }
+        "You're all set to use GitHub Copilot." => "GitHub Copilot'u kullanmaya hazırsınız.",
+
+        // ── CSV önizleme ──────────────────────────────────────────────────
+        "Toggle between: file line numbers or sequential row numbers" => {
+            "Şunlar arasında geçiş yap: dosya satır numaraları veya sıralı satır numaraları"
+        }
+        "A-Z, then Count" => "A-Z, sonra Sayı",
+        "Choose how filter values are sorted in the filter menu" => {
+            "Filtre menüsünde filtre değerlerinin nasıl sıralanacağını seçin"
+        }
+        "Choose vertical text alignment within cells" => {
+            "Hücrelerdeki dikey metin hizalamasını seçin"
+        }
+        "Count, then A-Z" => "Sayı, sonra A-Z",
+        "Display multiline rows" => "Çok satırlı satırları göster",
+        "Rendering Mode" => "Görüntüleme Modu",
+        "Show cell positions" => "Hücre konumlarını göster",
+        "Show perf metrics" => "Performans metriklerini göster",
+        "Uniform Height" => "Eşit Yükseklik",
+        "Variable Height" => "Değişken Yükseklik",
+        "Clear all" => "Tümünü temizle",
+
+        // ── Hata ayıklayıcı ───────────────────────────────────────────────
+        "Select a Debug Session" => "Bir Hata Ayıklama Oturumu Seç",
+        "Debugger:" => "Hata Ayıklayıcı:",
+        "Edit debug.json" => "debug.json'ı düzenle",
+        "Edit in debug.json" => "debug.json'da düzenle",
+        "Launch Custom" => "Özel Başlat",
+        "Stop on Entry" => "Girişte Dur",
+        "Working Directory" => "Çalışma Dizini",
+        "Evaluate an expression" => "Bir ifade değerlendir",
+        "Go to Memory Address / Expression" => "Bellek Adresine / İfadeye Git",
+        "Write to Selected Memory Range" => "Seçili Bellek Aralığına Yaz",
+
+        // ── Dev Container / uzak sunucular ────────────────────────────────
+        "Confirm Selections" => "Seçimleri Onayla",
+        "Create Dev Container" => "Dev Container Oluştur",
+        "Overwrite Existing Configuration?" => "Mevcut Yapılandırmanın Üzerine Yazılsın mı?",
+        "Querying features..." => "Özellikler sorgulanıyor...",
+        "Querying template registry..." => "Şablon kayıt defteri sorgulanıyor...",
+        "Search for Dev Container Templates" => "Dev Container Şablonları Ara",
+        "Select Feature" => "Özellik Seç",
+        "Template Option: " => "Şablon Seçeneği: ",
+        "Add a nickname for this server" => "Bu sunucu için bir takma ad ekleyin",
+        "Copy Server Address" => "Sunucu Adresini Kopyala",
+        "Creating Dev Container" => "Dev Container oluşturuluyor",
+        "Delete Remote Project" => "Uzak Projeyi Sil",
+        "Dev Containers" => "Dev Container'lar",
+        "Error Creating Dev Container:" => "Dev Container oluşturulurken hata:",
+        "Open devcontainer.json" => "devcontainer.json'ı aç",
+        "Open Zed Log" => "Zed Günlüğünü Aç",
+        "Remove Distro" => "Dağıtımı Kaldır",
+        "Remove Server" => "Sunucuyu Kaldır",
+        "Start Dev Container" => "Dev Container'ı Başlat",
+        "Caps lock is on." => "Caps lock açık.",
+
+        // ── Düzenleme tahmini ─────────────────────────────────────────────
+        "Check your payment status or contact us at billing-support@zed.dev to continue using this feature." => {
+            "Bu özelliği kullanmaya devam etmek için ödeme durumunuzu kontrol edin veya billing-support@zed.dev adresinden bize ulaşın."
+        }
+        "Disable Copilot" => "Copilot'u Devre Dışı Bırak",
+        "Display Modes" => "Görüntüleme Modları",
+        "Display predictions inline only when holding a modifier key (alt by default)." => {
+            "Tahminleri yalnızca bir değiştirici tuş (varsayılan alt) basılıyken satır içinde göster."
+        }
+        "Display predictions inline when there are no language server completions available." => {
+            "Dil sunucusu tamamlaması yokken tahminleri satır içinde göster."
+        }
+        "Edit Prediction" => "Düzenleme Tahmini",
+        "Edit predictions are disabled for this organization." => {
+            "Bu kuruluş için düzenleme tahminleri devre dışı."
+        }
+        "Go to Copilot Settings" => "Copilot Ayarlarına Git",
+        "Predict Edit at Cursor" => "İmleçte Düzenleme Tahmin Et",
+        "Rate Predictions" => "Tahminleri Değerlendir",
+        "Show Edit Predictions For" => "Düzenleme Tahminlerini Şunun İçin Göster",
+        "Sign In & Start Using" => "Giriş Yap ve Kullanmaya Başla",
+        "Sign In to Copilot" => "Copilot'a Giriş Yap",
+        "Sign Out" => "Çıkış Yap",
+        "Subscribe to increase your limit" => "Sınırınızı artırmak için abone olun",
+        "Upgrade to Zed Pro or contact us." => "Zed Pro'ya yükseltin veya bize ulaşın.",
+        "You have an outstanding invoice" => "Ödenmemiş bir faturanız var",
+        "Your GitHub account is less than 30 days old." => "GitHub hesabınız 30 günden yeni.",
+        "Add your feedback…" => "Geri bildiriminizi ekleyin…",
+        "Bad Prediction" => "Kötü Tahmin",
+        "Expected Patch" => "Beklenen Yama",
+        "Explain what's bad about it before reporting it" => {
+            "Bildirmeden önce neyin kötü olduğunu açıklayın"
+        }
+        "From most recent to oldest" => "En yeniden en eskiye",
+        "Good Prediction" => "İyi Tahmin",
+        "No edits produced." => "Düzenleme üretilmedi.",
+        "Predicted Patch" => "Tahmin Edilen Yama",
+        "Rated completion." => "Tamamlama değerlendirildi.",
+
+        // ── Kod incelemesi / uzantılar ────────────────────────────────────
+        "Add a review comment..." => "Bir inceleme yorumu ekle...",
+        "Add comment" => "Yorum ekle",
+        "Add Review (drag to select multiple lines)" => {
+            "İnceleme Ekle (birden fazla satır seçmek için sürükleyin)"
+        }
+        "Copy Author Info" => "Yazar Bilgisini Kopyala",
+        "Copy Extension ID" => "Uzantı Kimliğini Kopyala",
+        "Install Another Version..." => "Başka Bir Sürüm Kur...",
+
+        // ── Git (ek) ──────────────────────────────────────────────────────
+        "Learn more" => "Daha fazla bilgi",
+        "You may need to configure git for Github." => "Github için git'i yapılandırmanız gerekebilir.",
+        "Copy Commit SHA" => "Commit SHA'sını Kopyala",
+        "Open Permalink" => "Kalıcı Bağlantıyı Aç",
+        "Review Diff" => "Farkı İncele",
+        "Select Base Branch" => "Temel Dalı Seç",
+        "Commit SHA" => "Commit SHA",
+        "Open File in Project" => "Dosyayı Projede Aç",
+        "Remote up to date" => "Uzak depo güncel",
+        "Cancel Commit Message Generation" => "Commit Mesajı Oluşturmayı İptal Et",
+        "Configure Provider" => "Sağlayıcıyı Yapılandır",
+        "Create Pull Request" => "Pull Request Oluştur",
+        "See Docs" => "Belgelere Bak",
+        "This will update your most recent commit." => "Bu, en son commit'inizi güncelleyecek.",
+        "View Branch Diff" => "Dal Farkını Görüntüle",
+        "View Log" => "Günlüğü Görüntüle",
+        "View Options" => "Görünüm Seçenekleri",
+        "Toggle Staged" => "Hazırlamayı Aç/Kapat",
+        "Unstage Hunk" => "Parçanın Hazırlamasını Geri Al",
+        "Unstage Selected Hunks" => "Seçili Parçaların Hazırlamasını Geri Al",
+        "Restore All" => "Tümünü Geri Yükle",
+        "Restore Hunk" => "Parçayı Geri Yükle",
+        "Restore Selected Hunks" => "Seçili Parçaları Geri Yükle",
+        "Stage Hunk" => "Parçayı Hazırla",
+        "Stage Selected Hunks" => "Seçili Parçaları Hazırla",
+        "Automate Setup" => "Kurulumu Otomatikleştir",
+        "Deleting…" => "Siliniyor…",
+        "Open in New Window" => "Yeni Pencerede Aç",
+        "Remove Worktree from Window" => "Worktree'yi Pencereden Kaldır",
+        "Show Error Logs" => "Hata Günlüklerini Göster",
+
+        // ── İnceleyici / geliştirici araçları ─────────────────────────────
+        "JSON Style" => "JSON Stili",
+        "Reset style" => "Stili sıfırla",
+        "Rust Style" => "Rust Stili",
+        "Size of the element's children" => "Öğenin alt öğelerinin boyutu",
+        "Click to open by running Zed CLI" => "Zed CLI çalıştırarak açmak için tıklayın",
+        "Disambiguates elements from the same source location" => {
+            "Aynı kaynak konumundaki öğeleri ayırt eder"
+        }
+        "Element ID" => "Öğe Kimliği",
+        "GlobalElementId of the nearest ancestor with an ID" => {
+            "Kimliği olan en yakın atanın GlobalElementId değeri"
+        }
+        "GPUI Inspector" => "GPUI İnceleyici",
+        "Start inspector pick mode" => "İnceleyici seçim modunu başlat",
+        "Include profiler timings" => "Profil oluşturucu zamanlamalarını dahil et",
+
+        // ── Dil modeli sağlayıcıları ──────────────────────────────────────
+        "Loading credentials…" => "Kimlik bilgileri yükleniyor…",
+        "Loading credentials..." => "Kimlik bilgileri yükleniyor...",
+        "Loading Credentials…" => "Kimlik Bilgileri Yükleniyor…",
+        "API Key" => "API Anahtarı",
+        "Remove Provider" => "Sağlayıcıyı Kaldır",
+        "Reset API Key" => "API Anahtarını Sıfırla",
+        "Access Key ID" => "Erişim Anahtarı Kimliği",
+        "Attach the necessary Bedrock permissions to" => "Gerekli Bedrock izinlerini şuna ekleyin:",
+        "Bedrock API Key" => "Bedrock API Anahtarı",
+        "But first, to access models on AWS, you need to:" => {
+            "Ancak önce AWS'deki modellere erişmek için şunları yapmalısınız:"
+        }
+        "For Bedrock API Keys: Generate an API key from the" => {
+            "Bedrock API Anahtarları için: Şuradan bir API anahtarı oluşturun:"
+        }
+        "Secret Access Key" => "Gizli Erişim Anahtarı",
+        "Select the models you would like access to:" => "Erişmek istediğiniz modelleri seçin:",
+        "Session Token (Optional)" => "Oturum Belirteci (İsteğe bağlı)",
+        "Static Credentials" => "Statik Kimlik Bilgileri",
+        "Using the API key" => "API anahtarını kullanarak",
+        "API key" => "API anahtarı",
+        "API URL" => "API URL'si",
+        "Browse GGUF Models" => "GGUF Modellerine Göz At",
+        "Context Window" => "Bağlam Penceresi",
+        "Default: Discovered from the server" => "Varsayılan: Sunucudan keşfedilir",
+        "Get llama.cpp" => "llama.cpp'yi edin",
+        "Install llama.cpp from" => "llama.cpp'yi şuradan kurun:",
+        "Open WebUI" => "WebUI'yi Aç",
+        "Refresh Models" => "Modelleri Yenile",
+        "Reset API URL" => "API URL'sini Sıfırla",
+        "Start the server in router mode:" => "Sunucuyu yönlendirici modunda başlatın:",
+        "To use a local llama.cpp server:" => "Yerel bir llama.cpp sunucusu kullanmak için:",
+        "Click 'Connect' below to start using Ollama in Zed" => {
+            "Zed'de Ollama kullanmaya başlamak için aşağıdaki 'Bağlan'a tıklayın"
+        }
+        "Default: Model specific" => "Varsayılan: Modele özgü",
+        "Download and install Ollama from" => "Ollama'yı şuradan indirip kurun:",
+        "Download Ollama" => "Ollama'yı İndir",
+        "Start Ollama and download a model:" => "Ollama'yı başlatın ve bir model indirin:",
+        "To use local Ollama:" => "Yerel Ollama kullanmak için:",
+        "View All Models" => "Tüm Modelleri Görüntüle",
+        "Show Free models" => "Ücretsiz modelleri göster",
+        "Show Go models" => "Go modellerini göster",
+        "Show Zen Models" => "Zen Modellerini göster",
+        "Sign in and get your key at" => "Giriş yapın ve anahtarınızı şuradan alın:",
+
+        // ── Dil araçları ──────────────────────────────────────────────────
+        "Basedpyright is now the only default language server for Python" => {
+            "Basedpyright artık Python için tek varsayılan dil sunucusu"
+        }
+        "We have disabled PyRight and pylsp by default. They can be re-enabled in your settings." => {
+            "PyRight ve pylsp'yi varsayılan olarak devre dışı bıraktık. Ayarlarınızdan yeniden etkinleştirebilirsiniz."
+        }
+        "All highlights are filtered out" => "Tüm vurgular filtrelendi",
+        "Focus an editor to show highlights" => "Vurguları görmek için bir editöre odaklanın",
+        "Highlights Settings" => "Vurgulama Ayarları",
+        "No highlights found" => "Vurgu bulunamadı",
+        "Not attached to an editor" => "Bir editöre bağlı değil",
+        "Semantic Tokens" => "Anlamsal Belirteçler",
+        "Syntax Tokens" => "Sözdizimi Belirteçleri",
+        "Text Highlights" => "Metin Vurguları",
+        "Current Context Stack" => "Geçerli Bağlam Yığını",
+        "Edit Keymap File" => "Kısayol Dosyasını Düzenle",
+        "Key Equivalents" => "Tuş Eşdeğerleri",
+        "Keyboard Context" => "Klavye Bağlamı",
+        "Last Keystroke" => "Son Tuş Vuruşu",
+        "Open Documentation" => "Belgeleri Aç",
+        "Shortcuts defined using some characters have been remapped so that shortcuts can be typed without holding option." => {
+            "Bazı karakterlerle tanımlanan kısayollar, option tuşu basılı tutulmadan yazılabilsin diye yeniden eşlendi."
+        }
+        "View Default Keymap" => "Varsayılan Kısayolları Görüntüle",
+        "Language Servers can't run until you trust this project." => {
+            "Bu projeye güvenene kadar dil sunucuları çalışamaz."
+        }
+        "Project is in Restricted Mode" => "Proje Kısıtlı Modda",
+        "Restart Server" => "Sunucuyu Yeniden Başlat",
+        "Stop Server" => "Sunucuyu Durdur",
+        "View Logs" => "Günlükleri Görüntüle",
+        "View Message" => "Mesajı Görüntüle",
+        "Log level" => "Günlük seviyesi",
+        "Trace level" => "İzleme seviyesi",
+        "Current editor has no associated language" => "Geçerli editörün ilişkili bir dili yok",
+        "Focus an editor to show a new tree view" => {
+            "Yeni bir ağaç görünümü göstermek için bir editöre odaklanın"
+        }
+        "Image failed to load. Open `zed: log` for more details." => {
+            "Görsel yüklenemedi. Ayrıntılar için `zed: log`u açın."
+        }
+        "Copy as Markdown" => "Markdown Olarak Kopyala",
+        "More Info" => "Daha Fazla Bilgi",
+
+        // ── Karşılama / ilk kurulum ───────────────────────────────────────
+        "Agent Setup" => "Ajan Kurulumu",
+        "Automatically pull your settings from other editors" => {
+            "Ayarlarınızı diğer editörlerden otomatik olarak alın"
+        }
+        "Base Keymap" => "Temel Kısayol Şeması",
+        "Import Settings" => "Ayarları İçe Aktar",
+        "Install your favorite agents and start your first thread." => {
+            "Favori ajanlarınızı kurun ve ilk konuşmanızı başlatın."
+        }
+        "Sign In" => "Giriş Yap",
+        "Signing In…" => "Giriş yapılıyor…",
+        "Signing in…" => "Giriş yapılıyor…",
+        "Dismiss Hint" => "İpucunu Kapat",
+        "Finish Setup" => "Kurulumu Tamamla",
+        "Open Log" => "Günlüğü Aç",
+        "The editor for what's next" => "Geleceğin editörü",
+        "Welcome to Zed" => "Zed'e Hoş Geldiniz",
+
+        // ── Anahat paneli / seçiciler ─────────────────────────────────────
+        "Fold Directory" => "Dizini Katla",
+        "Search buffer symbols…" => "Tampon simgelerinde ara…",
+        "Searching:" => "Aranıyor:",
+        "Toggle Panel With" => "Paneli Şununla Aç/Kapat",
+        "Unfold Directory" => "Dizini Aç",
+        "Actions…" => "Eylemler…",
+        "Project Scan in Progress…" => "Proje taraması sürüyor…",
+        "Select Toolchain Path" => "Araç Zinciri Yolunu Seç",
+        "Install Icon Themes" => "Simge Temaları Kur",
+        "View Icon Theme Docs" => "Simge Teması Belgelerini Görüntüle",
+        "Install Themes" => "Tema Kur",
+        "View Theme Docs" => "Tema Belgelerini Görüntüle",
+
+        // ── Pencere / sekme yönetimi ──────────────────────────────────────
+        "Close Other Tabs" => "Diğer Sekmeleri Kapat",
+        "Close Tab" => "Sekmeyi Kapat",
+        "Move Tab to New Window" => "Sekmeyi Yeni Pencereye Taşı",
+        "Show All Tabs" => "Tüm Sekmeleri Göster",
+        "Close Window" => "Pencereyi Kapat",
+        "Add Folder to this Project" => "Bu Projeye Klasör Ekle",
+        "New Window" => "Yeni Pencere",
+        "Open Local Folders" => "Yerel Klasörleri Aç",
+        "Open Remote Folder" => "Uzak Klasörü Aç",
+        "Remove Folder" => "Klasörü Kaldır",
+        "Remove from Window" => "Pencereden Kaldır",
+        "This Window" => "Bu Pencere",
+        "Open Application Menu" => "Uygulama Menüsünü Aç",
+        "This project may not be shared in a public channel." => {
+            "Bu proje herkese açık bir kanalda paylaşılamaz."
+        }
+        "Create Branch" => "Dal Oluştur",
+        "Icon Themes…" => "Simge Temaları…",
+        "Restart to update Zed" => "Zed'i güncellemek için yeniden başlat",
+        "Themes…" => "Temalar…",
+        "Open in Default App" => "Varsayılan Uygulamada Aç",
+        "New File" => "Yeni Dosya",
+        "Search Project" => "Projede Ara",
+        "Search Symbols" => "Simgelerde Ara",
+        "Save File" => "Dosyayı Kaydet",
+
+        // ── REPL / not defteri ────────────────────────────────────────────
+        "ipykernel not installed" => "ipykernel kurulu değil",
+        "Kernel Docs" => "Çekirdek Belgeleri",
+        "Add code cell" => "Kod hücresi ekle",
+        "Add markdown cell" => "Markdown hücresi ekle",
+        "More options" => "Diğer seçenekler",
+        "This notebook is empty." => "Bu not defteri boş.",
+        "Copy Output" => "Çıktıyı Kopyala",
+        "Open Full Error in Buffer" => "Tam Hatayı Tamponda Aç",
+        "Open in Buffer" => "Tamponda Aç",
+        "Type here and press Enter" => "Buraya yazıp Enter'a basın",
+        "Install Kernels" => "Çekirdekleri Kur",
+        "Close output area" => "Çıktı alanını kapat",
+        "Interrupt" => "Kes",
+        "Clear Outputs" => "Çıktıları Temizle",
+        "REPL Menu" => "REPL Menüsü",
+        "Restart Kernel" => "Çekirdeği Yeniden Başlat",
+        "Select Kernel" => "Çekirdek Seç",
+        "Shut Down all Kernels" => "Tüm Çekirdekleri Kapat",
+        "Shut Down Kernel" => "Çekirdeği Kapat",
+        "View Sessions" => "Oturumları Görüntüle",
+
+        // ── Ayarlar (ek sayfalar) ─────────────────────────────────────────
+        "Input Device" => "Giriş Aygıtı",
+        "Output Device" => "Çıkış Aygıtı",
+        "Select which provider to use for edit predictions." => {
+            "Düzenleme tahminleri için hangi sağlayıcının kullanılacağını seçin."
+        }
+        "to generate an API key." => "bir API anahtarı oluşturmak için.",
+        "Visit the" => "Şunu ziyaret edin:",
+        "Add Custom Agent" => "Özel Ajan Ekle",
+        "Agents connected through the Agent Client Protocol." => {
+            "Agent Client Protocol üzerinden bağlanan ajanlar."
+        }
+        "Configure Agent" => "Ajanı Yapılandır",
+        "External Agents" => "Dış Ajanlar",
+        "No active project found. Open a workspace to manage external agents." => {
+            "Etkin proje bulunamadı. Dış ajanları yönetmek için bir çalışma alanı açın."
+        }
+        "No external agents added yet. Click \"Add Agent\" to get started." => {
+            "Henüz dış ajan eklenmedi. Başlamak için \"Ajan Ekle\"ye tıklayın."
+        }
+        "enabled for all" => "herkes için etkin",
+        "Add Model" => "Model Ekle",
+        "Default reasoning effort" => "Varsayılan akıl yürütme çabası",
+        "Save Provider" => "Sağlayıcıyı Kaydet",
+        "To find an API key, visit the" => "Bir API anahtarı bulmak için şunu ziyaret edin:",
+        "A client secret is required to connect this server" => {
+            "Bu sunucuya bağlanmak için istemci gizli anahtarı gerekir"
+        }
+        "Configure MCP Server" => "MCP Sunucusunu Yapılandır",
+        "Log Out" => "Oturumu Kapat",
+        "Manage servers connected directly or via extensions." => {
+            "Doğrudan veya uzantılar aracılığıyla bağlanan sunucuları yönetin."
+        }
+        "No active project found. Open a workspace to manage MCP servers." => {
+            "Etkin proje bulunamadı. MCP sunucularını yönetmek için bir çalışma alanı açın."
+        }
+        "No MCP servers added yet. Click \"Add Server\" to get started." => {
+            "Henüz MCP sunucusu eklenmedi. Başlamak için \"Sunucu Ekle\"ye tıklayın."
+        }
+        "Uninstall MCP Server" => "MCP Sunucusunu Kaldır",
+        "Learn more about sandboxing" => "Sandbox hakkında daha fazla bilgi",
+        "Nothing configured" => "Yapılandırılmış bir şey yok",
+        "Remove Domain" => "Alan Adını Kaldır",
+        "Remove Path" => "Yolu Kaldır",
+        "(optional)" => "(isteğe bağlı)",
+        "Fetching and parsing…" => "Getiriliyor ve ayrıştırılıyor…",
+        "Skill Content" => "Yetenek İçeriği",
+        "Copy Share Link" => "Paylaşım Bağlantısını Kopyala",
+        "Delete Skill" => "Yeteneği Sil",
+        "Action to take when no patterns match." => "Hiçbir desen eşleşmediğinde yapılacak eylem.",
+        "Default Action" => "Varsayılan Eylem",
+        "Default Permission" => "Varsayılan İzin",
+        "Delete Invalid Pattern" => "Geçersiz Deseni Sil",
+        "Delete Pattern" => "Deseni Sil",
+        "Enter a tool input to test your rules…" => {
+            "Kurallarınızı test etmek için bir araç girdisi girin…"
+        }
+        "Invalid Patterns" => "Geçersiz Desenler",
+        "No patterns configured" => "Yapılandırılmış desen yok",
+        "No regex matches, using the default action." => {
+            "Regex eşleşmesi yok, varsayılan eylem kullanılıyor."
+        }
+        "Result:" => "Sonuç:",
+        "Test Your Rules" => "Kurallarınızı Test Edin",
+        "Change Scope" => "Kapsamı Değiştir",
+        "Search settings…" => "Ayarlarda ara…",
+
+        // ── Güven / kısıtlı mod diyalogları ───────────────────────────────
+        "Do you want to leave the current call?" => "Geçerli görüşmeden ayrılmak istiyor musunuz?",
+        "Language servers from running" => "Dil sunucularının çalışmasını",
+        "MCP integrations from installing" => "MCP entegrasyonlarının kurulmasını",
+        "MCP Server integrations from installing" => "MCP Sunucusu entegrasyonlarının kurulmasını",
+        "Project settings from being applied" => "Proje ayarlarının uygulanmasını",
+        "Restricted mode prevents:" => "Kısıtlı mod şunları engeller:",
+        "Restricted Mode prevents:" => "Kısıtlı Mod şunları engeller:",
+        "Stay in Restricted Mode" => "Kısıtlı Modda Kal",
+        "Trust all projects in parent directory" => "Üst dizindeki tüm projelere güven",
+        "Trust all projects in" => "Şuradaki tüm projelere güven:",
+        "Trust and Continue" => "Güven ve Devam Et",
+        "Unrecognized Workspace" => "Tanınmayan Çalışma Alanı",
+        "Clone Repository" => "Depoyu Kopyala",
+        "Open Project" => "Projeyi Aç",
+        "Got it" => "Anladım",
+        "Renew Now" => "Şimdi Yenile",
+        "Backup & Update" => "Yedekle ve Güncelle",
+        "Backup and Update" => "Yedekle ve Güncelle",
+        "Thread reached the token limit" => "Konuşma token sınırına ulaştı",
+        "Your settings contain deprecated values" => {
+            "Ayarlarınız kullanımdan kaldırılmış değerler içeriyor"
+        }
+        "Your settings file uses deprecated settings" => {
+            "Ayar dosyanız kullanımdan kaldırılmış ayarlar içeriyor"
+        }
+        "Update Settings" => "Ayarları Güncelle",
+        "Installing Zed…" => "Zed kuruluyor…",
+        "Moving Zed to Applications" => "Zed Applications klasörüne taşınıyor",
+        "Zed will reopen when installation is complete." => {
+            "Kurulum tamamlandığında Zed yeniden açılacak."
+        }
+        "Paste a URL to open." => "Açmak için bir URL yapıştırın.",
+
+        // ── Hızlı eylem çubuğu ────────────────────────────────────────────
+        "Add Cursor Above" => "Yukarıya İmleç Ekle",
+        "Add Cursor Below" => "Aşağıya İmleç Ekle",
+        "Auto Signature Help" => "Otomatik İmza Yardımı",
+        "Code Lens" => "Kod Merceği",
+        "Column Git Blame" => "Sütun Git Blame",
+        "Duplicate Selection" => "Seçimi Çoğalt",
+        "Editor Controls" => "Editör Denetimleri",
+        "Expand Selection" => "Seçimi Genişlet",
+        "Go to Line/Column" => "Satıra/Sütuna Git",
+        "Go to Symbol" => "Simgeye Git",
+        "Helix Mode" => "Helix Modu",
+        "Inlay Hints" => "Satır İçi İpuçları",
+        "Inline diagnostics are not available until regular diagnostics are enabled." => {
+            "Normal tanılar etkinleştirilene kadar satır içi tanılar kullanılamaz."
+        }
+        "Inline Git Blame" => "Satır İçi Git Blame",
+        "Inline Values" => "Satır İçi Değerler",
+        "Line Numbers" => "Satır Numaraları",
+        "Move Line Down" => "Satırı Aşağı Taşı",
+        "Move Line Up" => "Satırı Yukarı Taşı",
+        "Next Problem" => "Sonraki Sorun",
+        "Previous Problem" => "Önceki Sorun",
+        "Select Next Occurrence" => "Sonraki Örneği Seç",
+        "Selection Controls" => "Seçim Denetimleri",
+        "Selection Menu" => "Seçim Menüsü",
+        "Semantic Highlights" => "Anlamsal Vurgular",
+        "Shrink Selection" => "Seçimi Daralt",
+        "Vim Mode" => "Vim Modu",
+        "You can't toggle edit predictions for this file as it is within the excluded files list." => {
+            "Bu dosya hariç tutulan dosyalar listesinde olduğu için düzenleme tahminlerini değiştiremezsiniz."
+        }
+        "Clear Events" => "Olayları Temizle",
+        "Filter events..." => "Olayları filtrele...",
+        "Open Raw Log File" => "Ham Günlük Dosyasını Aç",
+        "signed in" => "giriş yapıldı",
+
+        // ── Tema önizlemesi ───────────────────────────────────────────────
+        "Theme Preview" => "Tema Önizlemesi",
+        "Text Colors" => "Metin Renkleri",
+        "Headline Sizes" => "Başlık Boyutları",
+        "Body Text" => "Gövde Metni",
+        "Wrapping Text" => "Kaydırılan Metin",
+
         _ => return None,
     })
 }
