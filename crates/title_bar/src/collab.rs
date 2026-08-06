@@ -241,7 +241,7 @@ impl TitleBar {
                                 .occlude()
                                 .tooltip({
                                     let login = collaborator.user.username.clone();
-                                    Tooltip::text(format!("Follow {login}"))
+                                    Tooltip::text(ui::tr_format!("Follow {}", login))
                                 }),
                         )
                     }))
@@ -437,7 +437,10 @@ impl TitleBar {
                                 h_flex()
                                     .gap_4()
                                     .justify_between()
-                                    .child(Label::new(format!("Connection: {quality_label}")))
+                                    .child(Label::new(ui::tr_format!(
+                                        "Connection: {}",
+                                        quality_label
+                                    )))
                                     .when(has_key_binding, |this| this.child(key_binding)),
                             )
                             .child(

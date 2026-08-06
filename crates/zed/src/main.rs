@@ -486,6 +486,9 @@ fn main() {
         trusted_worktrees::init(db_trusted_paths, cx);
         menu::init();
         zed_actions::init();
+        // Türkçe dil paketini gpui'ye bağla: bundan sonra çizilen her ham metin
+        // çeviriden geçer. Herhangi bir pencere açılmadan önce çağrılmalı.
+        ui::tr::init();
 
         release_channel::init(app_version, cx);
         gpui_tokio::init(cx);

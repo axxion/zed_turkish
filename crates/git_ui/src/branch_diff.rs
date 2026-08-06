@@ -451,7 +451,7 @@ impl Item for BranchDiff {
 
     fn tab_content_text(&self, _detail: usize, cx: &App) -> SharedString {
         match self.diff_base(cx) {
-            DiffBase::Merge { base_ref } => format!("Changes since {}", base_ref).into(),
+            DiffBase::Merge { base_ref } => ui::tr_format!("Changes since {}", base_ref).into(),
             DiffBase::Head | DiffBase::Index | DiffBase::Staged => "Changes".into(),
         }
     }
@@ -738,7 +738,7 @@ impl Render for BranchDiffToolbar {
             return div();
         };
         let selected_base_ref = base_ref.clone();
-        let base_ref_label = format!("Base: {base_ref}");
+        let base_ref_label = ui::tr_format!("Base: {}", base_ref);
         let repository = branch_diff.read(cx).repo(cx);
         let workspace = branch_diff.read(cx).workspace.clone();
         let view_for_picker = branch_diff.downgrade();

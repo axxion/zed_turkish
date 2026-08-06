@@ -1513,7 +1513,10 @@ impl<'a> ElicitationCard<'a> {
                                     .color(status_color),
                             )
                             .child(
-                                Label::new(format!("Input Requested by {}", self.requester_name))
+                                Label::new(ui::tr_format!(
+                                    "Input Requested by {}",
+                                    self.requester_name
+                                ))
                                     .size(LabelSize::Custom(tool_name_font_size))
                                     .truncate(),
                             ),

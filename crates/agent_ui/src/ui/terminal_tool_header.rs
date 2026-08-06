@@ -213,7 +213,10 @@ impl RenderOnce for TerminalToolHeader {
                         .icon_size(IconSize::Small)
                         .icon_color(Color::Error)
                         .when_some(exit_code, |this, code| {
-                            this.tooltip(Tooltip::text(format!("Exited with code {code}")))
+                            this.tooltip(Tooltip::text(ui::tr_format!(
+                                "Exited with code {}",
+                                code
+                            )))
                         }),
                 )
             })

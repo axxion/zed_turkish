@@ -1264,8 +1264,13 @@ impl Render for PanelButtons {
                 let (action, tooltip) = if is_active_button {
                     let action = dock.toggle_action();
 
-                    let tooltip: SharedString =
-                        format!("Close {} Dock", dock.position.label()).into();
+                    // Yön etiketi ("Left"/"Right"/"Bottom") ayrıca çevrilir;
+                    // şablonun kendisi sözlükte "{} paneli kapat" karşılığını bulur.
+                    let tooltip: SharedString = ui::tr_format!(
+                        "Close {} Dock",
+                        ui::tr::translate(dock.position.label())
+                    )
+                    .into();
 
                     (action, tooltip)
                 } else {

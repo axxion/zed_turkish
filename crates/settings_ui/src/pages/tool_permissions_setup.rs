@@ -569,7 +569,7 @@ fn render_verification_section(
                             this.child(render_hardcoded_rules(true, cx))
                         } else if let Some(reason) = &denial_reason {
                             this.child(
-                                Label::new(format!("Denied: {}", reason))
+                                Label::new(ui::tr_format!("Denied: {}", reason))
                                     .size(LabelSize::XSmall)
                                     .color(Color::Warning),
                             )
@@ -591,7 +591,7 @@ fn render_verification_section(
                         denial_reason.filter(|_| patterns_agree && !is_hardcoded_denial),
                         |this, reason| {
                             this.child(
-                                Label::new(format!("Reason: {}", reason))
+                                Label::new(ui::tr_format!("Reason: {}", reason))
                                     .size(LabelSize::XSmall)
                                     .color(Color::Error),
                             )
@@ -893,7 +893,7 @@ fn render_invalid_patterns_section(
                                 ),
                         )
                         .child(
-                            Label::new(format!("Error: {}", invalid.error))
+                            Label::new(ui::tr_format!("Error: {}", invalid.error))
                                 .size(LabelSize::XSmall)
                                 .color(Color::Muted),
                         )

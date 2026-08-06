@@ -12,6 +12,21 @@ pub struct HighlightedLabel {
     highlight_indices: Vec<usize>,
 }
 
+/// Etiketin çevirisi varsa Türkçesini, yoksa özgün metni döndürür.
+///
+/// Çeviri uygulandığında vurgu indeksleri geçersizleşir (özgün metnin bayt
+/// konumlarını gösterirler), bu yüzden boşaltılır. Çevirisi olmayan etiketler
+/// — dosya adları, dal adları, simgeler — vurgularını korur.
+fn translate_dropping_highlights(
+    label: SharedString,
+    highlight_indices: Vec<usize>,
+) -> (SharedString, Vec<usize>) {
+    match crate::tr::lookup(label.as_ref()) {
+        Some(translated) => (translated, Vec::new()),
+        None => (label, highlight_indices),
+    }
+}
+
 impl HighlightedLabel {
     /// Constructs a label with the given characters highlighted.
     /// Characters are identified by UTF-8 byte position.
@@ -29,6 +44,12 @@ impl HighlightedLabel {
             );
             highlight_indices.clear();
         }
+
+        // Seçicilerde (picker) görünen etiketler buradan geçer. Çeviri varsa
+        // Türkçesini göster; vurgu indeksleri ÖZGÜN metnin bayt konumlarını
+        // gösterdiği için çeviri uygulandığında vurguları düşür — yanlış yeri
+        // vurgulamaktansa vurgusuz ama doğru metin göstermek yeğdir.
+        let (label, highlight_indices) = translate_dropping_highlights(label, highlight_indices);
 
         Self {
             base: LabelLike::new(),
@@ -56,6 +77,8 @@ impl HighlightedLabel {
                 indices
             })
             .collect();
+
+        let (label, highlight_indices) = translate_dropping_highlights(label, highlight_indices);
 
         Self {
             base: LabelLike::new(),

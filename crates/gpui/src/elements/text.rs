@@ -15,8 +15,29 @@ use std::{
     mem,
     ops::{Deref, DerefMut, Range},
     rc::Rc,
-    sync::Arc,
+    sync::{Arc, OnceLock},
 };
+
+/// Ham metnin ekrana çizilmeden hemen önce geçtiği isteğe bağlı çeviri kancası.
+///
+/// gpui bir arayüz çatısıdır ve dil paketini kendisi bilmez; çeviri motoru üst
+/// katmanda (`ui::tr`) durur ve uygulama açılışında bu kancayı kaydeder. Kanca
+/// kaydedilmemişse metin aynen çizilir, yani davranış değişmez.
+static TEXT_TRANSLATOR: OnceLock<fn(&str) -> Option<SharedString>> = OnceLock::new();
+
+/// Görünür metinler için çeviri kancasını kurar. Yalnızca ilk çağrı etkilidir.
+///
+/// Kanca, `div().child("Skills")` gibi doğrudan çizilen metinler dahil olmak
+/// üzere `SharedString` olarak çizilen tüm metinlere uygulanır.
+pub fn set_text_translator(translator: fn(&str) -> Option<SharedString>) {
+    let _ = TEXT_TRANSLATOR.set(translator);
+}
+
+/// Kayıtlı kanca varsa `text` için çeviri döndürür.
+#[inline]
+fn translated(text: &str) -> Option<SharedString> {
+    TEXT_TRANSLATOR.get().and_then(|translate| translate(text))
+}
 
 /// An [`Element`] that renders text.
 ///
@@ -270,8 +291,9 @@ impl Element for &'static str {
         window: &mut Window,
         cx: &mut App,
     ) -> (LayoutId, Self::RequestLayoutState) {
+        let text = translated(self).unwrap_or_else(|| SharedString::from(*self));
         let mut state = TextLayout::default();
-        let layout_id = state.layout(SharedString::from(*self), None, window, cx);
+        let layout_id = state.layout(text, None, window, cx);
         (layout_id, state)
     }
 
@@ -344,6 +366,11 @@ impl Element for SharedString {
         window: &mut Window,
         cx: &mut App,
     ) -> (LayoutId, Self::RequestLayoutState) {
+        // Çeviri burada uygulanır: `prepaint`/`paint` metni yalnızca hata
+        // mesajlarında kullanır, çizilen glif'ler bu düzenden gelir.
+        if let Some(translation) = translated(self.as_ref()) {
+            *self = translation;
+        }
         let mut state = TextLayout::default();
         let layout_id = state.layout(self.clone(), None, window, cx);
         (layout_id, state)

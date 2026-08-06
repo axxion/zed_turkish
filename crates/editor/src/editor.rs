@@ -3081,6 +3081,12 @@ impl Editor {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        // Placeholder, editörün kendi çizim yolundan geçer ve gpui'nin metin
+        // kancasına hiç uğramaz; çeviri bu yüzden burada uygulanır. Tek nokta
+        // olduğu için tüm arama kutuları ve giriş alanları kapsanır.
+        let placeholder_text = ui::tr::translate(placeholder_text.to_string());
+        let placeholder_text = placeholder_text.as_ref();
+
         let multibuffer = cx
             .new(|cx| MultiBuffer::singleton(cx.new(|cx| Buffer::local(placeholder_text, cx)), cx));
 

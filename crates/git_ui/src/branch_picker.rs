@@ -1761,7 +1761,8 @@ impl PickerDelegate for BranchListDelegate {
         };
 
         let create_from_default_button = self.default_branch.as_ref().map(|default_branch| {
-            let tooltip_label: SharedString = format!("Create New From: {default_branch}").into();
+            let tooltip_label: SharedString =
+                ui::tr_format!("Create New From: {}", default_branch).into();
             let focus_handle = self.focus_handle.clone();
 
             IconButton::new("create_from_default", IconName::GitBranchPlus)

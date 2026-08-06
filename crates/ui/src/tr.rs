@@ -914,7 +914,8 @@ fn builtin(text: &str) -> Option<&'static str> {
         "Fold Directory" => "Dizini Katla",
         "Search buffer symbols…" => "Tampon simgelerinde ara…",
         "Searching:" => "Aranıyor:",
-        "Toggle Panel With" => "Paneli Şununla Aç/Kapat",
+        // Ardından kısayol gösterilir; "With" edatı Türkçede karşılıksız kalır.
+        "Toggle Panel With" => "Paneli Aç/Kapat",
         "Unfold Directory" => "Dizini Aç",
         "Actions…" => "Eylemler…",
         "Project Scan in Progress…" => "Proje taraması sürüyor…",
@@ -1125,15 +1126,98 @@ fn builtin(text: &str) -> Option<&'static str> {
     })
 }
 
+/// `text` için çeviri arar. Karşılığı yoksa `None` döner — çağıran özgün
+/// metni olduğu gibi kullanabilir, gereksiz kopyalama olmaz.
+pub fn lookup(text: &str) -> Option<SharedString> {
+    if let Some(translation) = overrides().get(text) {
+        Some(translation.as_str().into())
+    } else {
+        builtin(text)
+            .or_else(|| crate::tr_more::builtin_more(text))
+            .map(SharedString::from)
+    }
+}
+
 /// Ekranda görünen `text` için çeviri arar; bulamazsa aynen döner.
 pub fn translate(text: impl Into<SharedString>) -> SharedString {
     let text: SharedString = text.into();
-    let text = text.as_ref();
-    if let Some(translation) = overrides().get(text) {
-        translation.as_str().into()
-    } else if let Some(translation) = builtin(text) {
-        translation.into()
-    } else {
-        text.into()
+    lookup(text.as_ref()).unwrap_or(text)
+}
+
+/// Yer tutuculu (`{}` / `{0}`) bir biçim şablonunu çevirip doldurur.
+///
+/// `format!` ile kurulan metinler çalışma zamanında dinamik olduğu için düz
+/// sözlük eşleşmesiyle yakalanamaz. Bu işlev **şablonun kendisini** anahtar
+/// kabul eder; çeviri bulunursa Türkçe şablon doldurulur.
+///
+/// Türkçede sözcük dizilişi farklı olabildiği için Türkçe şablon konumlu
+/// yer tutucu kullanabilir:
+///
+/// ```text
+/// "Changes since {}"  =>  "{} dalından beri değişiklikler"
+/// "Base: {0} — {1}"   =>  "{1} — temel: {0}"
+/// ```
+///
+/// Yalnızca `{}` ve `{0}`, `{1}` … biçimleri desteklenir; `{ad}` gibi adlandırılmış
+/// ya da `{:?}` gibi biçim belirteçli yer tutucularla kullanılmamalıdır.
+pub fn format_translated(template: &str, args: &[String]) -> String {
+    let template = lookup(template)
+        .map(|translated| translated.to_string())
+        .unwrap_or_else(|| template.to_string());
+
+    let mut out = String::with_capacity(template.len() + 16);
+    let mut chars = template.chars().peekable();
+    let mut next_arg = 0usize;
+
+    while let Some(ch) = chars.next() {
+        match ch {
+            '{' if chars.peek() == Some(&'{') => {
+                chars.next();
+                out.push('{');
+            }
+            '{' => {
+                let mut spec = String::new();
+                let mut closed = false;
+                for inner in chars.by_ref() {
+                    if inner == '}' {
+                        closed = true;
+                        break;
+                    }
+                    spec.push(inner);
+                }
+                if !closed {
+                    // Kapanmamış yer tutucu: olduğu gibi bırak.
+                    out.push('{');
+                    out.push_str(&spec);
+                    continue;
+                }
+                let index = spec.trim().parse::<usize>().unwrap_or_else(|_| {
+                    let index = next_arg;
+                    next_arg += 1;
+                    index
+                });
+                if let Some(arg) = args.get(index) {
+                    out.push_str(arg);
+                }
+            }
+            '}' => {
+                if chars.peek() == Some(&'}') {
+                    chars.next();
+                }
+                out.push('}');
+            }
+            other => out.push(other),
+        }
     }
+
+    out
+}
+
+/// Çeviri motorunu gpui'ye bağlar.
+///
+/// Bu kayıttan sonra `div().child("Skills")` gibi doğrudan çizilen ham metinler
+/// de çeviriden geçer — yani çağrı yerlerini tek tek sarmak gerekmez.
+/// Uygulama açılışında, herhangi bir pencere çizilmeden önce çağrılmalıdır.
+pub fn init() {
+    gpui::set_text_translator(lookup);
 }

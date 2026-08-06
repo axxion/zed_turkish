@@ -1298,7 +1298,7 @@ impl CollabPanel {
                     ),
             )
             .child(Label::new(project_name.clone()))
-            .tooltip(Tooltip::text(format!("Open {}", project_name)))
+            .tooltip(Tooltip::text(ui::tr_format!("Open {}", project_name)))
     }
 
     fn render_participant_screen(

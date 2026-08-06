@@ -106,7 +106,7 @@ impl Render for DiagnosticIndicator {
                         if warnings == 1 { "" } else { "s" }
                     ));
                 }
-                format!("Project diagnostics: {}", parts.join(", "))
+                ui::tr_format!("Project diagnostics: {}", parts.join(", "))
             }
         };
 

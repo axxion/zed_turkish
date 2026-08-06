@@ -1612,7 +1612,14 @@ fn open_about_window(cx: &mut App) {
                                     .color(Color::Muted)
                                     .size(LabelSize::XSmall),
                             )
-                            .child(Label::new(self.full_version.clone()).size(LabelSize::Small)),
+                            .child(Label::new(self.full_version.clone()).size(LabelSize::Small))
+                            // Türkçe sürüm atfı
+                            .child(
+                                Label::new("Türkçeye çeviri")
+                                    .color(Color::Muted)
+                                    .size(LabelSize::XSmall),
+                            )
+                            .child(Label::new("mantar.io").size(LabelSize::Small)),
                     )
                     .child(
                         h_flex()
