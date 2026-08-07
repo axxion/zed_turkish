@@ -1597,7 +1597,11 @@
   "disable_ai": false,
   // Automatically update Zed. This setting may be ignored on Linux if
   // installed through a package manager.
-  "auto_update": true,
+  //
+  // Zed TR: kapalı. Bu bir çatal ve güncelleme akışı upstream Zed sunucularına
+  // bakar; açık bırakılırsa Türkçe sürümün üzerine İngilizce Zed kurulabilir.
+  // Güncellemeler GitHub Releases üzerinden elle yapılır.
+  "auto_update": false,
   // How to render LSP `textDocument/documentColor` colors in the editor.
   //
   // Possible values:

@@ -42,12 +42,19 @@ const ICON_DIR: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../zed/resources/wi
 const MANIFEST_PATH: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/resources/manifest.xml");
 
 pub fn compile(manifest: bool) -> Result<(), Box<dyn std::error::Error>> {
-    let channel = option_env!("RELEASE_CHANNEL").unwrap_or("dev");
+    // Zed TR: ortam değişkeni yoksa çalışma zamanının okuduğu DOSYAYA düş.
+    //
+    // Upstream burada `.unwrap_or("dev")` yapıyordu; oysa çalışma zamanı kanalı
+    // `crates/zed/RELEASE_CHANNEL` dosyasından okunuyor ve içeriği "stable".
+    // İkisi ayrışınca pencere başlığı "Zed TR" derken exe meta verisi ve ikon
+    // "Dev" oluyordu. Aynı kaynağa bağlayarak bir daha ayrışmalarını engelliyoruz.
+    let channel = option_env!("RELEASE_CHANNEL")
+        .unwrap_or_else(|| include_str!("../../zed/RELEASE_CHANNEL").trim());
     let (icon_filename, product_name) = match channel {
-        "stable" => ("app-icon.ico", "Zed"),
-        "preview" => ("app-icon-preview.ico", "Zed Preview"),
-        "nightly" => ("app-icon-nightly.ico", "Zed Nightly"),
-        _ => ("app-icon-dev.ico", "Zed Dev"),
+        "preview" => ("app-icon-preview.ico", "Zed TR Preview"),
+        "nightly" => ("app-icon-nightly.ico", "Zed TR Nightly"),
+        "dev" => ("app-icon-dev.ico", "Zed TR Dev"),
+        _ => ("app-icon.ico", "Zed TR"),
     };
     let icon = std::path::PathBuf::from(ICON_DIR).join(icon_filename);
     let icon_escaped = icon.to_string_lossy().replace('\\', "\\\\");
@@ -94,8 +101,8 @@ BEGIN
             VALUE "FileVersion", "{pkg_version}\0"
             VALUE "ProductName", "{product_name}\0"
             VALUE "ProductVersion", "{product_version}\0"
-            VALUE "CompanyName", "Zed Industries, Inc.\0"
-            VALUE "LegalCopyright", "Copyright 2022 - 2025 Zed Industries, Inc.\0"
+            VALUE "CompanyName", "AYA Vakfı\0"
+            VALUE "LegalCopyright", "Copyright 2022 - 2025 Zed Industries, Inc. — Türkçe çatal: AYA Vakfı\0"
         END
     END
     BLOCK "VarFileInfo"

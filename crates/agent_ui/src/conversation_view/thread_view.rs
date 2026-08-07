@@ -3644,7 +3644,7 @@ impl ThreadView {
         let title: SharedString = if queue_count == 1 {
             "1 Queued Message".into()
         } else {
-            format!("{} Queued Messages", queue_count).into()
+            ui::tr_format!("{} Queued Messages", queue_count).into()
         };
 
         h_flex()

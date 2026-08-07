@@ -1589,6 +1589,13 @@ pub(crate) fn builtin_more(text: &str) -> Option<&'static str> {
         "Dismiss Warning" => "Uyarıyı Kapat",
         "Edit" => "Düzenle",
         "Edit Queued Message" => "Kuyruktaki Mesajı Düzenle",
+        "Type anything to edit" => "Düzenlemek için bir şey yazın",
+        "Send Now" => "Şimdi Gönder",
+        "1 Queued Message" => "Kuyrukta 1 mesaj",
+        // Kaynakta satır devamı (`\`) ile bölünmüş; çalışma zamanındaki hâli budur.
+        "Interrupt the agent at its next step to send this message. When off, queued messages wait for the agent to finish." => {
+            "Bu mesajı göndermek için ajanı bir sonraki adımında kes. Kapalıyken kuyruktaki mesajlar ajanın bitirmesini bekler."
+        }
         "Editing will restart the thread from this point." => {
             "Düzenleme, konuşmayı bu noktadan yeniden başlatır."
         }
@@ -2287,13 +2294,17 @@ pub(crate) fn builtin_more(text: &str) -> Option<&'static str> {
         "Base: {}" => "Temel: {}",
         "View on {}" => "{} üzerinde görüntüle",
         "Close {} Dock" => "{} paneli kapat",
+        "{} Queued Messages" => "Kuyrukta {} mesaj",
+        // Yerleşik ajan için ad yazmıyoruz; şablon yer tutucu içermediğinden
+        // argüman kullanılmadan atılır.
         "Message the {}, @ to include context, / for commands" => {
-            "{} için mesaj yazın; bağlam eklemek için @, komutlar için /"
+            "Yapay zeka için mesajınızı yazın; bağlam eklemek için @, komutlar için /"
         }
+        // Dış ajanlarda ad anlamlı, korunuyor.
         "Message {} — @ to include context, / for commands" => {
-            "{} — mesaj yazın; bağlam eklemek için @, komutlar için /"
+            "{} — mesajınızı yazın; bağlam eklemek için @, komutlar için /"
         }
-        "Message {} — @ to include context" => "{} — mesaj yazın; bağlam eklemek için @",
+        "Message {} — @ to include context" => "{} — mesajınızı yazın; bağlam eklemek için @",
 
         // ── Hata ayıklayıcı sekmeleri, tema modu, araç zinciri ────────────
         "Console" => "Konsol",

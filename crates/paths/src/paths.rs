@@ -15,7 +15,13 @@ pub const EDITORCONFIG_NAME: &str = ".editorconfig";
 /// and state directory paths.
 ///
 /// Forks should change this to avoid colliding with Zed's user data.
-pub const APP_NAME: &str = "Zed";
+///
+/// Zed TR: upstream'de "Zed" idi; bu çatal aynı klasörü kullandığı sürece
+/// gerçek Zed'in ayarlarını ve oturum durumunu paylaşıyordu. Ayrıldı ki ikisi
+/// yan yana kurulabilsin. Küçük harfli hâli (`zed-tr`) çalıştırılabilir dosya
+/// adıyla eşleşmek zorunda — `crates/zed/src/main.rs` içindeki assert bunu
+/// derleme zamanında denetliyor.
+pub const APP_NAME: &str = "Zed-TR";
 
 /// Lowercased form of [`APP_NAME`], for use in XDG-style paths on
 /// Linux/FreeBSD and the macOS `~/.config` fallback.

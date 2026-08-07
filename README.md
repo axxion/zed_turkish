@@ -1,9 +1,12 @@
-# AYA Vakfı Editörü — Türkçe Zed Çatalı
+# Zed TR — Türkçe Zed
 
-[Zed](https://zed.dev) editörünün (taban: **v1.14.2**) tamamen **Türkçe arayüzlü** ve **AYA Vakfı** markalı özel derlemesi.
+[Zed](https://zed.dev) editörünün (taban: **v1.14.2**) tamamen **Türkçe arayüzlü** çatalı.
+**AYA Vakfı** tarafından yayımlanır.
 
 > Bu proje, [zed-industries/zed](https://github.com/zed-industries/zed) kaynak kodunun bağımsız bir çatalıdır.
-> Zed Industries ile bağlantılı, onun onaylı veya sponsorlu bir ürünü değildir.
+> Zed Industries ile bağlantılı, onun onaylı veya sponsorlu bir ürünü **değildir**.
+> "Zed" adı Zed Industries'in markasıdır ve burada yalnızca çatalın hangi projeye
+> dayandığını belirtmek için tanımlayıcı olarak kullanılır.
 
 ## İndir (Windows x64)
 
@@ -11,15 +14,15 @@ Derlemeye uğraşmak istemiyorsanız hazır sürümü indirin:
 
 **[→ Son sürümü indir (Releases)](https://github.com/axxion/zed_turkish/releases/latest)**
 
-`Zed-Turkce-<sürüm>.zip` dosyasını indirip **klasörün tamamını** bir yere çıkarın
-(örneğin `C:\Program Files\ZedTurkce` veya `%LOCALAPPDATA%\ZedTurkce`), sonra
-`zed.exe` dosyasını çalıştırın. Kurulum sihirbazı yoktur; çıkarıp çalıştırmanız yeterli.
+`Zed-TR-<sürüm>.zip` dosyasını indirip **klasörün tamamını** bir yere çıkarın
+(örneğin `%LOCALAPPDATA%\ZedTR`), sonra `zed-tr.exe` dosyasını çalıştırın.
+Kurulum sihirbazı yoktur; çıkarıp çalıştırmanız yeterli.
 
 ZIP içindekiler:
 
 | Dosya | Ne işe yarar |
 |---|---|
-| `zed.exe` | Uygulamanın kendisi. Türkçe sözlük ikilinin içine derlenmiştir |
+| `zed-tr.exe` | Uygulamanın kendisi. Türkçe sözlük ikilinin içine derlenmiştir |
 | `OpenConsole.exe` + `conpty.dll` | Windows'ta terminalin çalışması için gerekli (Microsoft ConPTY). **Silmeyin** |
 | `translations.json` | İsteğe bağlı. Çevirileri derlemeden değiştirmek isterseniz (aşağıya bakın) |
 
@@ -48,7 +51,13 @@ derleyip aynı sonucu elde edebilirsiniz.
 - **Kapsama gpui seviyesinde**: çizilen her metin çeviri kancasından geçer, bu yüzden
   tek tek sarmalanmamış metinler de Türkçeleşir. Editör içeriği ve terminal çıktısı
   bu yoldan geçmez — yani kodunuz ve terminal çıktınız asla çevrilmez
-- **AYA Vakfı markası**: uygulama adı, pencere başlığı, sürüm kanalları (`org.ayavakfi.Aya`)
+- **Zed TR markası**: uygulama adı, pencere başlığı, çalıştırılabilir dosya (`zed-tr.exe`),
+  pastel yeşil uygulama ikonu
+- **Ayarlar gerçek Zed'den ayrı**: `APP_NAME` çatala özel (`Zed-TR`), bu yüzden
+  Zed TR ile resmi Zed aynı makinede ayarlarını karıştırmadan yan yana kurulabilir.
+  Ayarlarınız `%APPDATA%\Zed-TR` altında tutulur
+- **Otomatik güncelleme kapalı**: güncelleme akışı upstream Zed sunucularına baktığı
+  için kapatıldı; yeni sürümler bu depodaki Releases üzerinden gelir
 - **Onboarding kapalı**: ilk açılışta tanıtım turu açılmaz, doğrudan boş editör açılır
 - **Ön tanımlı varsayılan ayarlar** (`assets/settings/default.json`):
   - Proje / outline / işbirliği / git panelleri **solda**, agent paneli **sağda**
@@ -70,7 +79,11 @@ Ortamı hazırlayıp derleyin (`build_zed.bat` bunların hepsini ayarlar):
 build_zed.bat cargo build --release -p zed
 ```
 
-Çıktı: `target\release\zed.exe`
+Çıktı: `target\release\zed-tr.exe`
+
+Not: Çalıştırılabilir dosya adı `zed-tr` olduğu için `crates/paths/src/paths.rs`
+içindeki `APP_NAME` de `Zed-TR` olmalıdır — `crates/zed/src/main.rs` içindeki bir
+assert bunu derleme zamanında denetler. İkisini birlikte değiştirin.
 
 Not: Windows'ta derlerken **Smart App Control (SAC)** kapalı olmalıdır; aksi hâlde imzasız ara çalıştırılabilirler engellenir (os error 4551).
 
@@ -80,11 +93,13 @@ Bu çatal **GPL-3.0-or-later** ([LICENSE-GPL](LICENSE-GPL)) lisanslıdır; Apach
 
 Orijinal kaynak: [zed-industries/zed](https://github.com/zed-industries/zed) — telif hakkı Zed Industries, Inc. Tüm orijinal telif ve lisans bildirimleri korunmuştur.
 
-"Zed" adı ve logosu Zed Industries'in ticari markasıdır; bu çatalda kullanılmaz, çatal Zed Industries tarafından onaylanmamıştır.
+"Zed" adı ve logosu Zed Industries'in ticari markalarıdır. Bu çatal Zed Industries
+tarafından onaylanmamıştır ve onunla bağlantılı değildir; "Zed TR" adı yalnızca
+çatalın hangi projeye dayandığını belirten tanımlayıcı bir kullanımdır.
 
 ## Dil dosyası ile çeviri güncelleme (derlemesiz)
 
-Uygulama, `zed.exe` dosyasının **yanındaki** `translations.json` dosyasını çalışma zamanında okur.
+Uygulama, `zed-tr.exe` dosyasının **yanındaki** `translations.json` dosyasını çalışma zamanında okur.
 Bir metni değiştirmek için dosyaya **ekranda gördüğünüz metni anahtar olarak** ekleyin ve uygulamayı yeniden başlatın:
 
 ```json
