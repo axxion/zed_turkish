@@ -21,7 +21,7 @@ pub const EDITORCONFIG_NAME: &str = ".editorconfig";
 /// yan yana kurulabilsin. Küçük harfli hâli (`zed-tr`) çalıştırılabilir dosya
 /// adıyla eşleşmek zorunda — `crates/zed/src/main.rs` içindeki assert bunu
 /// derleme zamanında denetliyor.
-pub const APP_NAME: &str = "Zed-TR";
+pub const APP_NAME: &str = "Zed-L10n";
 
 /// Lowercased form of [`APP_NAME`], for use in XDG-style paths on
 /// Linux/FreeBSD and the macOS `~/.config` fallback.

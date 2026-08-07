@@ -162,52 +162,52 @@ impl SectionEntry {
 
 const CONTENT: (Section<4>, Section<3>) = (
     Section {
-        title: "Başlarken",
+        title: "Get Started",
         entries: [
             SectionEntry {
                 icon: IconName::Plus,
-                title: "Yeni Dosya",
+                title: "New File",
                 action: &NewFile,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::FolderOpen,
-                title: "Proje Aç",
+                title: "Open Project",
                 action: &Open::DEFAULT,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::CloudDownload,
-                title: "Depoyu Klonla",
+                title: "Clone Repository",
                 action: &GitClone,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::ListCollapse,
-                title: "Komut Paletini Aç",
+                title: "Open Command Palette",
                 action: &command_palette::Toggle,
                 visibility_guard: SectionVisibility::Always,
             },
         ],
     },
     Section {
-        title: "Yapılandır",
+        title: "Configure",
         entries: [
             SectionEntry {
                 icon: IconName::Settings,
-                title: "Ayarları Aç",
+                title: "Open Settings",
                 action: &OpenSettings,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::Keyboard,
-                title: "Tuş Bağlamalarını Özelleştir",
+                title: "Customize Keymaps",
                 action: &OpenKeymap,
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
                 icon: IconName::Blocks,
-                title: "Uzantıları Keşfet",
+                title: "Explore Extensions",
                 action: &Extensions {
                     category_filter: None,
                     id: None,
@@ -330,7 +330,7 @@ impl WelcomePage {
         let focus = self.focus_handle.clone();
         let color = cx.theme().colors();
 
-        let description = "Aynı anda birden çok iş parçacığı çalıştırın, ACP uyumlu ajanları birleştirin ve worktree'ler sayesinde çakışmasız çalışın.";
+        let description = "Run multiple threads at once, mix and match any ACP-compatible agent, and keep work conflict-free with worktrees.";
 
         v_flex()
             .w_full()
@@ -351,7 +351,7 @@ impl WelcomePage {
                             .color(Color::Muted)
                             .size(IconSize::Small),
                     )
-                    .child(Label::new("Ajanlarla İş Birliği Yap")),
+                    .child(Label::new("Collaborate with Agents")),
             )
             .child(
                 Label::new(description)
@@ -360,7 +360,7 @@ impl WelcomePage {
                     .mb_2(),
             )
             .child(
-                Button::new("open-agent", "Ajan Panelini Aç")
+                Button::new("open-agent", "Open Agent Panel")
                     .full_width()
                     .tab_index(tab_index as isize)
                     .style(ButtonStyle::Outlined)
@@ -381,7 +381,7 @@ impl WelcomePage {
     ) -> impl IntoElement {
         v_flex()
             .w_full()
-            .child(SectionHeader::new("Son Projeler"))
+            .child(SectionHeader::new("Recent Projects"))
             .children(recent_projects)
     }
 
@@ -448,9 +448,9 @@ impl Render for WelcomePage {
         };
 
         let welcome_label = if self.fallback_to_recent_projects {
-            "Zed'e Tekrar Hoş Geldiniz"
+            "Welcome back to Zed"
         } else {
-            "Zed'e Hoş Geldiniz"
+            "Welcome to Zed"
         };
 
         h_flex()
@@ -480,7 +480,7 @@ impl Render for WelcomePage {
                             .child(Vector::square(VectorName::ZedLogo, rems_from_px(45.)))
                             .child(
                                 v_flex().child(Headline::new(welcome_label)).child(
-                                    Label::new("Geleceğin editörü")
+                                    Label::new("The editor for what's next")
                                         .size(LabelSize::Small)
                                         .color(Color::Muted)
                                         .italic(),
@@ -497,7 +497,7 @@ impl Render for WelcomePage {
                     .when(!self.fallback_to_recent_projects, |this| {
                         this.child(
                             v_flex().gap_4().child(Divider::horizontal()).child(
-                                Button::new("welcome-exit", "Kayıt Adımlarına Dön")
+                                Button::new("welcome-exit", "Return to Onboarding")
                                     .tab_index(next_tab_index as isize)
                                     .full_width()
                                     .label_size(LabelSize::XSmall)

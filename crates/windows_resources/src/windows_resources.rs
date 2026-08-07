@@ -51,10 +51,10 @@ pub fn compile(manifest: bool) -> Result<(), Box<dyn std::error::Error>> {
     let channel = option_env!("RELEASE_CHANNEL")
         .unwrap_or_else(|| include_str!("../../zed/RELEASE_CHANNEL").trim());
     let (icon_filename, product_name) = match channel {
-        "preview" => ("app-icon-preview.ico", "Zed TR Preview"),
-        "nightly" => ("app-icon-nightly.ico", "Zed TR Nightly"),
-        "dev" => ("app-icon-dev.ico", "Zed TR Dev"),
-        _ => ("app-icon.ico", "Zed TR"),
+        "preview" => ("app-icon-preview.ico", "Zed L10n Preview"),
+        "nightly" => ("app-icon-nightly.ico", "Zed L10n Nightly"),
+        "dev" => ("app-icon-dev.ico", "Zed L10n Dev"),
+        _ => ("app-icon.ico", "Zed L10n"),
     };
     let icon = std::path::PathBuf::from(ICON_DIR).join(icon_filename);
     let icon_escaped = icon.to_string_lossy().replace('\\', "\\\\");
@@ -80,8 +80,12 @@ pub fn compile(manifest: bool) -> Result<(), Box<dyn std::error::Error>> {
         version_parts.next().unwrap_or(0),
     );
 
+    // Kaynak dosyası UTF-8 yazılıyor; rc.exe ise varsayılan olarak sistem ANSI
+    // kod sayfasıyla okuyor. Bildirmezsek Türkçe harfler bozuluyordu
+    // ("AYA Vakfı" → "AYA VakfÄ±"). 65001 = UTF-8.
     let rc_content = format!(
-        r#"1 ICON "{icon_escaped}"
+        r#"#pragma code_page(65001)
+1 ICON "{icon_escaped}"
 {manifest_line}
 
 1 VERSIONINFO

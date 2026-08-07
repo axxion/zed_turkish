@@ -6,7 +6,7 @@ version = "1.14.2"
 publish.workspace = true
 license = "GPL-3.0-or-later"
 authors = ["Zed Team <hi@zed.dev>"]
-default-run = "zed-tr"
+default-run = "zed-l10n"
 
 [lints]
 workspace = true
@@ -57,7 +57,7 @@ visual-tests = [
 # Türkçe çatal: çalıştırılabilir dosya adı zed-tr.exe olsun ki Türkçe sürüm
 # olduğu dosya adından anlaşılsın. Paket adı "zed" olarak kalır; başka crate'ler
 # ona referans veriyor.
-name = "zed-tr"
+name = "zed-l10n"
 path = "src/main.rs"
 
 [[bin]]

@@ -1126,14 +1126,14 @@ impl ProjectPanel {
                 menu.context(self.focus_handle.clone()).map(|menu| {
                     if is_read_only {
                         menu.when(is_markdown, |menu| {
-                            menu.action("Markdown Önizlemesini Aç", Box::new(OpenMarkdownPreview))
+                            menu.action("Open Markdown Preview", Box::new(OpenMarkdownPreview))
                         })
                         .when(is_dir, |menu| {
-                            menu.action("İçinde Ara", Box::new(NewSearchInDirectory))
+                            menu.action("Search Inside", Box::new(NewSearchInDirectory))
                         })
                     } else {
-                        menu.action("Yeni Dosya", Box::new(NewFile))
-                            .action("Yeni Klasör", Box::new(NewDirectory))
+                        menu.action("New File", Box::new(NewFile))
+                            .action("New Folder", Box::new(NewDirectory))
                             .separator()
                             .when(is_local, |menu| {
                                 menu.action(
@@ -1142,76 +1142,76 @@ impl ProjectPanel {
                                 )
                             })
                             .when(is_local, |menu| {
-                                menu.action("Varsayılan Uygulamayla Aç", Box::new(OpenWithSystem))
+                                menu.action("Open in Default App", Box::new(OpenWithSystem))
                             })
-                            .action("Terminalde Aç", Box::new(OpenInTerminal))
+                            .action("Open in Terminal", Box::new(OpenInTerminal))
                             .when(is_markdown, |menu| {
-                                menu.action("Markdown Önizlemesini Aç", Box::new(OpenMarkdownPreview))
+                                menu.action("Open Markdown Preview", Box::new(OpenMarkdownPreview))
                             })
                             .when(is_dir, |menu| {
                                 menu.separator()
                                     .action("Klasörde Ara…", Box::new(NewSearchInDirectory))
                             })
                             .when(is_unfoldable, |menu| {
-                                menu.action("Dizini Genişlet", Box::new(UnfoldDirectory))
+                                menu.action("Unfold Directory", Box::new(UnfoldDirectory))
                             })
                             .when(is_foldable, |menu| {
-                                menu.action("Dizini Daralt", Box::new(FoldDirectory))
+                                menu.action("Fold Directory", Box::new(FoldDirectory))
                             })
                             .when(should_show_compare, |menu| {
                                 menu.separator()
-                                    .action("İşaretli Dosyaları Karşılaştır", Box::new(CompareMarkedFiles))
+                                    .action("Compare Marked Files", Box::new(CompareMarkedFiles))
                             })
                             .separator()
-                            .action("Kes", Box::new(Cut))
-                            .action("Kopyala", Box::new(Copy))
-                            .action("Çoğalt", Box::new(Duplicate))
-                            .action_disabled_when(!has_pasteable_content, "Yapıştır", Box::new(Paste))
+                            .action("Cut", Box::new(Cut))
+                            .action("Copy", Box::new(Copy))
+                            .action("Duplicate", Box::new(Duplicate))
+                            .action_disabled_when(!has_pasteable_content, "Paste", Box::new(Paste))
                             .when(
                                 !is_collab && cx.has_flag::<ProjectPanelUndoRedoFeatureFlag>(),
                                 |menu| {
                                     let can_undo = self.undo_manager.can_undo();
                                     let can_redo = self.undo_manager.can_redo();
 
-                                    menu.action_disabled_when(!can_undo, "Geri Al", Box::new(Undo))
-                                        .action_disabled_when(!can_redo, "Yinele", Box::new(Redo))
+                                    menu.action_disabled_when(!can_undo, "Undo", Box::new(Undo))
+                                        .action_disabled_when(!can_redo, "Redo", Box::new(Redo))
                                 },
                             )
                             .when(is_remote, |menu| {
                                 menu.separator()
-                                    .action("İndir...", Box::new(DownloadFromRemote))
+                                    .action("Download...", Box::new(DownloadFromRemote))
                             })
                             .separator()
-                            .action("Yolu Kopyala", Box::new(zed_actions::workspace::CopyPath))
+                            .action("Copy Path", Box::new(zed_actions::workspace::CopyPath))
                             .action(
-                                "Göreli Yolu Kopyala",
+                                "Copy Relative Path",
                                 Box::new(zed_actions::workspace::CopyRelativePath),
                             )
                             .when(has_git_repo, |menu| {
                                 menu.separator()
                                     .when(!is_dir && self.has_git_changes(entry_id), |menu| {
                                         menu.action(
-                                            "Dosyayı Geri Yükle",
+                                            "Restore File",
                                             Box::new(git::RestoreFile { skip_prompt: false }),
                                         )
                                     })
-                                    .action(".gitignore'a Ekle", Box::new(git::AddToGitignore))
+                                    .action("Add to .gitignore", Box::new(git::AddToGitignore))
                                     .action(
-                                        ".git/info/exclude'a Ekle",
+                                        "Add to .git/info/exclude",
                                         Box::new(git::AddToGitInfoExclude),
                                     )
                                     .when(has_history, |menu| {
-                                        menu.action("Geçmişi Görüntüle", Box::new(git::FileHistory))
+                                        menu.action("View History", Box::new(git::FileHistory))
                                     })
                             })
                             .when(!should_hide_rename, |menu| {
-                                menu.separator().action("Yeniden Adlandır", Box::new(Rename))
+                                menu.separator().action("Rename", Box::new(Rename))
                             })
                             .when(!is_root && !is_collab, |menu| {
-                                menu.action("Çöp Kutusuna Taşı", Box::new(Trash { skip_prompt: false }))
+                                menu.action("Trash", Box::new(Trash { skip_prompt: false }))
                             })
                             .when(!is_root, |menu| {
-                                menu.action("Sil", Box::new(Delete { skip_prompt: false }))
+                                menu.action("Delete", Box::new(Delete { skip_prompt: false }))
                             })
                             .when(!is_collab && is_root, |menu| {
                                 menu.separator()
@@ -1219,20 +1219,20 @@ impl ProjectPanel {
                                         "Projeye Klasör Ekle…",
                                         Box::new(workspace::AddFolderToProject),
                                     )
-                                    .action("Projeden Kaldır", Box::new(RemoveFromProject))
+                                    .action("Remove from Project", Box::new(RemoveFromProject))
                             })
                             .when(is_dir && !is_root, |menu| {
                                 menu.separator()
-                                    .action("Tümünü Genişlet", Box::new(ExpandSelectedEntryAndChildren))
+                                    .action("Expand All", Box::new(ExpandSelectedEntryAndChildren))
                                     .action(
-                                        "Tümünü Daralt",
+                                        "Collapse All",
                                         Box::new(CollapseSelectedEntryAndChildren),
                                     )
                             })
                             .when(is_dir && is_root, |menu| {
                                 menu.separator()
-                                    .action("Tümünü Genişlet", Box::new(ExpandAllEntries))
-                                    .action("Tümünü Daralt", Box::new(CollapseAllEntries))
+                                    .action("Expand All", Box::new(ExpandAllEntries))
+                                    .action("Collapse All", Box::new(CollapseAllEntries))
                             })
                     }
                 })
