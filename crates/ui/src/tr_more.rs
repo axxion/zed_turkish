@@ -2463,6 +2463,7 @@ pub(crate) fn builtin_more(text: &str) -> Option<&'static str> {
         "Join the Team" => "Ekibe Katıl",
         "Expand Message Editor" => "Mesaj Editörünü Genişlet",
         "Open Recent Project" => "Son Projeyi Aç",
+        "New Agent Thread" => "Yeni Ajan Konuşması",
         "untitled" => "adsız",
         "Unrecognized Project" => "Tanınmayan Proje",
         "Unrecognized Projects ({})" => "Tanınmayan Projeler ({})",

@@ -150,6 +150,18 @@ it, translate the values, drop it into `locales/`.
 Türkçeye düşmez — yarım çeviri karışımı olmasın diye. / **Note:** missing entries
 fall back to English, never to Turkish.
 
+### Dil talebi / Requesting a language
+
+Kendiniz çevirmek istemiyorsanız **[#1 numaralı konuya hangi dili istediğinizi
+yazın](https://github.com/axxion/Zed-L10n/issues/1)** — çevirip depoya ekleyeceğiz
+ve bir sürümle yayınlayacağız. Rust bilmenize veya derleme yapmanıza gerek yok.
+Mevcut bir çeviri kulağa yanlış geliyorsa da aynı yere yazabilirsiniz.
+
+Don't want to do it yourself? **[Tell us which language you need in issue
+#1](https://github.com/axxion/Zed-L10n/issues/1)** — we'll translate it, add it to
+the repo and ship it in a release. No Rust, no build step required. Corrections to
+existing translations are welcome there too.
+
 ### Sınırlar / Limitations
 
 - Editör içeriği ve terminal çıktısı **hiçbir zaman** çevrilmez — kodunuz kodunuz
