@@ -1602,6 +1602,10 @@
   // bakar; açık bırakılırsa Türkçe sürümün üzerine İngilizce Zed kurulabilir.
   // Güncellemeler GitHub Releases üzerinden elle yapılır.
   "auto_update": false,
+  // Arayüz dili. "system" işletim sistemi dilini kullanır, "en" çeviriyi kapatır.
+  // Diğer kodlar için exe yanındaki veya kullanıcı dizinindeki
+  // locales/<kod>.json dosyası okunur. Değişiklik yeniden başlatmada etkinleşir.
+  "locale": "tr",
   // How to render LSP `textDocument/documentColor` colors in the editor.
   //
   // Possible values:

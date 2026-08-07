@@ -87,7 +87,7 @@ impl Render for SecurityModal {
         let header_label: SharedString = if restricted_count == 1 {
             "Unrecognized Project".into()
         } else {
-            format!("Unrecognized Projects ({})", restricted_count).into()
+            ui::tr_format!("Unrecognized Projects ({})", restricted_count).into()
         };
 
         let trust_label = self.build_trust_label();

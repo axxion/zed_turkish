@@ -181,6 +181,18 @@ pub struct SettingsContent {
     /// Default: true
     pub auto_update: Option<bool>,
 
+    /// Arayüz dili. Dil dosyaları `zed-l10n.exe` yanındaki `locales/` klasöründen
+    /// ve kullanıcı yapılandırma dizinindeki `locales/` klasöründen okunur.
+    ///
+    /// - `"system"`: işletim sistemi diline uyar, karşılığı yoksa İngilizce
+    /// - `"en"`: çeviri kapalı, özgün İngilizce metinler
+    /// - `"tr"` ve diğerleri: `locales/<kod>.json`
+    ///
+    /// Değişiklik yeniden başlatmada etkinleşir.
+    ///
+    /// Default: "tr"
+    pub locale: Option<String>,
+
     /// This base keymap settings adjusts the default keybindings in Zed to be similar
     /// to other common code editors. By default, Zed's keymap closely follows VSCode's
     /// keymap, with minor adjustments, this corresponds to the "VSCode" setting.

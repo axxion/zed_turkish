@@ -1842,9 +1842,14 @@ mod tests {
         store.register_setting::<ItemSettings>();
         store.register_setting::<DefaultLanguageSettings>();
 
+        // Zed L10n: varsayılan `auto_update` upstream'de true, bu çatalda false.
+        // Güncelleme akışı upstream sunucularına baktığı için kapatıldı; test
+        // de çatalın varsayılanını doğruluyor.
         assert_eq!(
             store.get::<AutoUpdateSetting>(None),
-            &AutoUpdateSetting { auto_update: true }
+            &AutoUpdateSetting {
+                auto_update: false
+            }
         );
         assert_eq!(
             store.get::<ItemSettings>(None).close_position,

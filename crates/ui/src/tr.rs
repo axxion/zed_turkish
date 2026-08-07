@@ -15,28 +15,177 @@
 //!
 //! Öncelik: `translations.json` > yerleşik `builtin()` haritası > orijinal metin.
 
-use std::{collections::HashMap, sync::OnceLock};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+    sync::{OnceLock, RwLock},
+};
 
 use gpui::SharedString;
 
+/// Çeviri kapalı: özgün İngilizce metinler gösterilir.
+pub const LOCALE_NONE: &str = "en";
+/// İşletim sistemi diline uy.
+pub const LOCALE_SYSTEM: &str = "system";
+/// Yerleşik sözlüğün dili. Bu dil için dosya bulunamazsa ikiliye gömülü
+/// sözlük devreye girer.
+pub const LOCALE_BUILTIN: &str = "tr";
+
+/// Seçili dil kodu. Ayarlar yüklenmeden önce çizilen metinler için varsayılan
+/// olarak yerleşik dil kullanılır.
+static LOCALE: RwLock<Option<String>> = RwLock::new(None);
+
+/// Seçili dilin dosyadan okunan sözlüğü. Dil değişimi yeniden başlatma
+/// gerektirdiği için oturum boyunca bir kez yüklenir.
 static OVERRIDES: OnceLock<HashMap<String, String>> = OnceLock::new();
+
+fn locale() -> String {
+    LOCALE
+        .read()
+        .ok()
+        .and_then(|guard| guard.clone())
+        .unwrap_or_else(|| LOCALE_BUILTIN.to_string())
+}
+
+/// Arayüz dilini belirler. Ayarlar yüklendikten sonra, ilk pencere çizilmeden
+/// çağrılmalıdır; sözlük ilk kullanımda bu değere göre yüklenir.
+pub fn set_locale(code: &str) {
+    let resolved = if code == LOCALE_SYSTEM {
+        system_locale().unwrap_or_else(|| LOCALE_NONE.to_string())
+    } else {
+        code.to_string()
+    };
+    if let Ok(mut guard) = LOCALE.write() {
+        *guard = Some(resolved);
+    }
+}
+
+/// İşletim sisteminin dil kodu (ör. `tr`). Bulunamazsa `None`.
+fn system_locale() -> Option<String> {
+    for var in ["LANG", "LC_ALL", "LANGUAGE"] {
+        if let Ok(value) = std::env::var(var) {
+            if let Some(code) = value.split(['_', '.', '-']).next() {
+                if !code.is_empty() && code != "C" && code != "POSIX" {
+                    return Some(code.to_lowercase());
+                }
+            }
+        }
+    }
+    // NOT: Windows'ta bu ortam değişkenleri genelde tanımlı değildir, bu yüzden
+    // "system" orada çoğunlukla İngilizceye düşer. Sistem dilini gerçekten
+    // okumak için bir platform çağrısı (GetUserDefaultLocaleName) gerekir;
+    // `ui` crate'ine yeni bağımlılık eklememek için şimdilik yapılmadı.
+    None
+}
+
+/// Dil dosyasının aranacağı dizinler: önce kullanıcı yapılandırma dizini
+/// (Program Files'a yazma yetkisi olmayabilir), sonra exe'nin yanı.
+fn locale_dirs() -> Vec<PathBuf> {
+    let mut dirs = Vec::new();
+    if let Some(config) = dirs_config_dir() {
+        dirs.push(config.join("locales"));
+    }
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(dir) = exe.parent() {
+            dirs.push(dir.join("locales"));
+        }
+    }
+    dirs
+}
+
+fn dirs_config_dir() -> Option<PathBuf> {
+    // `paths` crate'ine bağımlılık eklememek için doğrudan ortamdan okunur.
+    #[cfg(target_os = "windows")]
+    {
+        std::env::var_os("APPDATA").map(|base| PathBuf::from(base).join(paths_app_name()))
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        std::env::var_os("XDG_CONFIG_HOME")
+            .map(PathBuf::from)
+            .or_else(|| std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".config")))
+            .map(|base| base.join(paths_app_name().to_lowercase()))
+    }
+}
+
+fn paths_app_name() -> String {
+    // Uygulama adı derleme zamanında sabit; `paths` crate'i ile aynı değer.
+    "Zed-L10n".to_string()
+}
 
 fn overrides() -> &'static HashMap<String, String> {
     OVERRIDES.get_or_init(load_translations)
 }
 
+/// Seçili dil için sözlüğü yükler.
+///
+/// Arama sırası:
+/// 1. exe yanındaki `translations.json` (eski sürümlerle uyum, en yüksek öncelik)
+/// 2. `<kullanıcı yapılandırma>/locales/<kod>.json`
+/// 3. `<exe dizini>/locales/<kod>.json`
+///
+/// Hiçbiri yoksa boş döner; bu durumda yerleşik sözlük (yalnızca `tr` için)
+/// devreye girer.
 fn load_translations() -> HashMap<String, String> {
-    if let Ok(exe) = std::env::current_exe() {
-        if let Some(dir) = exe.parent() {
-            let path = dir.join("translations.json");
-            if let Ok(text) = std::fs::read_to_string(path) {
-                if let Ok(map) = serde_json::from_str::<HashMap<String, String>>(&text) {
+    let locale = locale();
+    if locale == LOCALE_NONE {
+        return HashMap::new();
+    }
+
+    // Eski düzen: exe yanında tek bir translations.json. Yalnızca yerleşik dil
+    // seçiliyken geçerlidir — aksi hâlde başka bir dile geçen, elinde eski
+    // dosya kalmış kullanıcı yine Türkçe görürdü.
+    if locale == LOCALE_BUILTIN {
+        if let Ok(exe) = std::env::current_exe() {
+            if let Some(dir) = exe.parent() {
+                if let Some(map) = read_locale_file(&dir.join("translations.json")) {
                     return map;
                 }
             }
         }
     }
+
+    for dir in locale_dirs() {
+        if let Some(map) = read_locale_file(&dir.join(format!("{locale}.json"))) {
+            return map;
+        }
+    }
+
     HashMap::new()
+}
+
+fn read_locale_file(path: &Path) -> Option<HashMap<String, String>> {
+    let text = std::fs::read_to_string(path).ok()?;
+    let mut map = serde_json::from_str::<HashMap<String, String>>(&text).ok()?;
+    // `_name` gibi meta anahtarlar çeviri değildir.
+    map.retain(|key, _| !key.starts_with('_'));
+    Some(map)
+}
+
+/// Kullanılabilir dil kodlarını dosya sisteminden keşfeder.
+///
+/// Dil menüsü bu listeden üretilir; kullanıcı `locales/` klasörüne bir dosya
+/// attığında menüde kendiliğinden belirir.
+pub fn available_locales() -> Vec<String> {
+    let mut codes = vec![LOCALE_NONE.to_string(), LOCALE_BUILTIN.to_string()];
+    for dir in locale_dirs() {
+        let Ok(entries) = std::fs::read_dir(&dir) else {
+            continue;
+        };
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.extension().and_then(|ext| ext.to_str()) != Some("json") {
+                continue;
+            }
+            if let Some(stem) = path.file_stem().and_then(|stem| stem.to_str()) {
+                let code = stem.to_lowercase();
+                if !codes.contains(&code) {
+                    codes.push(code);
+                }
+            }
+        }
+    }
+    codes
 }
 
 /// Kod içinde hâlâ İngilizce duran metinlerin yerleşik Türkçeleri.
@@ -1129,13 +1278,27 @@ fn builtin(text: &str) -> Option<&'static str> {
 /// `text` için çeviri arar. Karşılığı yoksa `None` döner — çağıran özgün
 /// metni olduğu gibi kullanabilir, gereksiz kopyalama olmaz.
 pub fn lookup(text: &str) -> Option<SharedString> {
-    if let Some(translation) = overrides().get(text) {
-        Some(translation.as_str().into())
-    } else {
-        builtin(text)
-            .or_else(|| crate::tr_more::builtin_more(text))
-            .map(SharedString::from)
+    let locale = locale();
+
+    // "en" = çeviri kapalı. Yerleşik sözlük de devre dışı kalmalı, yoksa
+    // İngilizce isteyen kullanıcı yine Türkçe görürdü.
+    if locale == LOCALE_NONE {
+        return None;
     }
+
+    if let Some(translation) = overrides().get(text) {
+        return Some(translation.as_str().into());
+    }
+
+    // Yerleşik sözlük yalnızca kendi dili için geçerlidir; başka bir dil
+    // seçiliyse eksik metinler İngilizce kalır, Türkçeye düşmez.
+    if locale != LOCALE_BUILTIN {
+        return None;
+    }
+
+    builtin(text)
+        .or_else(|| crate::tr_more::builtin_more(text))
+        .map(SharedString::from)
 }
 
 /// Ekranda görünen `text` için çeviri arar; bulamazsa aynen döner.
@@ -1220,4 +1383,12 @@ pub fn format_translated(template: &str, args: &[String]) -> String {
 /// Uygulama açılışında, herhangi bir pencere çizilmeden önce çağrılmalıdır.
 pub fn init() {
     gpui::set_text_translator(lookup);
+}
+
+/// Ayarlardaki dil seçimini uygular.
+///
+/// Ayar sistemi `init()`'ten sonra yüklendiği için ayrı bir çağrıdır; sözlük
+/// ilk kullanımda yüklendiğinden, ilk pencere çizilmeden çağrılması yeterlidir.
+pub fn set_locale_from_settings(code: Option<&str>) {
+    set_locale(code.unwrap_or(LOCALE_BUILTIN));
 }

@@ -48,7 +48,7 @@ use project::{project_settings::ProjectSettings, trusted_worktrees};
 use recent_projects::{RemoteSettings, open_remote_project};
 use release_channel::{AppCommitSha, AppVersion, ReleaseChannel};
 use session::{AppSession, Session};
-use settings::{BaseKeymap, Settings, SettingsStore, watch_config_file};
+use settings::{BaseKeymap, RegisterSetting, Settings, SettingsStore, watch_config_file};
 use smol::future::poll_once;
 use std::{
     cell::RefCell,
@@ -195,6 +195,24 @@ fn fail_to_open_window(e: anyhow::Error, _cx: &mut App) {
     }
 }
 static STARTUP_TIME: OnceLock<Instant> = OnceLock::new();
+
+/// Arayüz dili ayarı — `locales/<kod>.json` dosyasını seçer.
+///
+/// `"en"` çeviriyi tamamen kapatır (ikiliye gömülü Türkçe dahil), `"system"`
+/// işletim sistemi dilini dener. Değişiklik yeniden başlatmada etkinleşir.
+#[derive(Clone, Debug, RegisterSetting)]
+struct LocaleSetting(String);
+
+impl Settings for LocaleSetting {
+    fn from_settings(content: &settings::SettingsContent) -> Self {
+        Self(
+            content
+                .locale
+                .clone()
+                .unwrap_or_else(|| ui::tr::LOCALE_BUILTIN.to_string()),
+        )
+    }
+}
 
 fn main() {
     STARTUP_TIME.get_or_init(|| Instant::now());
@@ -496,6 +514,11 @@ fn main() {
             AppCommitSha::set_global(app_commit_sha, cx);
         }
         settings::init(cx);
+        // Arayüz dilini ayarlardan al. `ui::tr::init()` kancayı çok daha erken
+        // kurar; burada yalnızca hangi sözlüğün yükleneceği belirlenir. Sözlük
+        // ilk kullanımda yüklendiği için bu noktada yapılması yeterli.
+        LocaleSetting::register(cx);
+        ui::tr::set_locale(&LocaleSetting::get_global(cx).0);
         zlog_settings::init(cx);
         zed::watch_settings_files(fs.clone(), cx);
         handle_keymap_file_changes(user_keymap_file_rx, user_keymap_watcher, cx);

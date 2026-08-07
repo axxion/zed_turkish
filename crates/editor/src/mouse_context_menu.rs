@@ -247,11 +247,11 @@ pub fn deploy_context_menu(
             let builder = menu
                 .on_blur_subscription(Subscription::new(|| {}))
                 .when(run_to_cursor, |builder| {
-                    builder.action(ui::tr::translate("Run to Cursor"), Box::new(RunToCursor))
+                    builder.action("Run to Cursor", Box::new(RunToCursor))
                 })
                 .when(evaluate_selection && has_selections, |builder| {
                     builder.action(
-                        ui::tr::translate("Evaluate Selection"),
+                        "Evaluate Selection",
                         Box::new(EvaluateSelectedText),
                     )
                 })
@@ -260,36 +260,36 @@ pub fn deploy_context_menu(
                     |builder| builder.separator(),
                 )
                 .action(
-                    ui::tr::translate("Go to Definition"),
+                    "Go to Definition",
                     Box::new(GoToDefinition::default()),
                 )
                 .action(
-                    ui::tr::translate("Go to Declaration"),
+                    "Go to Declaration",
                     Box::new(GoToDeclaration),
                 )
                 .action(
-                    ui::tr::translate("Go to Type Definition"),
+                    "Go to Type Definition",
                     Box::new(GoToTypeDefinition),
                 )
                 .action(
-                    ui::tr::translate("Go to Implementation"),
+                    "Go to Implementation",
                     Box::new(GoToImplementation::default()),
                 )
                 .action(
-                    ui::tr::translate("Find All References"),
+                    "Find All References",
                     Box::new(FindAllReferences::default()),
                 )
                 .separator()
-                .action(ui::tr::translate("Rename Symbol"), Box::new(Rename))
-                .action(ui::tr::translate("Format Buffer"), Box::new(Format))
+                .action("Rename Symbol", Box::new(Rename))
+                .action("Format Buffer", Box::new(Format))
                 .when(format_selections, |cx| {
                     cx.action(
-                        ui::tr::translate("Format Selections"),
+                        "Format Selections",
                         Box::new(FormatSelections),
                     )
                 })
                 .action(
-                    ui::tr::translate("Show Code Actions"),
+                    "Show Code Actions",
                     Box::new(ToggleCodeActions {
                         deployed_from: None,
                         quick_launch: false,
@@ -297,15 +297,15 @@ pub fn deploy_context_menu(
                 )
                 .when(!disable_ai && has_selections, |this| {
                     this.action(
-                        ui::tr::translate("Add to Agent Thread"),
+                        "Add to Agent Thread",
                         Box::new(AddSelectionToThread),
                     )
                 })
                 .separator()
-                .action(ui::tr::translate("Cut"), Box::new(Cut))
-                .action(ui::tr::translate("Copy"), Box::new(Copy))
-                .action(ui::tr::translate("Copy and Trim"), Box::new(CopyAndTrim))
-                .action(ui::tr::translate("Paste"), Box::new(Paste))
+                .action("Cut", Box::new(Cut))
+                .action("Copy", Box::new(Copy))
+                .action("Copy and Trim", Box::new(CopyAndTrim))
+                .action("Paste", Box::new(Paste))
                 .separator()
                 .action_disabled_when(
                     !has_reveal_target,
@@ -314,29 +314,29 @@ pub fn deploy_context_menu(
                 )
                 .when(is_markdown, |builder| {
                     builder.action(
-                        ui::tr::translate("Open Markdown Preview"),
+                        "Open Markdown Preview",
                         Box::new(OpenMarkdownPreview),
                     )
                 })
                 .when(is_svg, |builder| {
                     builder.action(
-                        ui::tr::translate("Open SVG Preview"),
+                        "Open SVG Preview",
                         Box::new(OpenSvgPreview),
                     )
                 })
                 .action_disabled_when(
                     !has_reveal_target,
-                    ui::tr::translate("Open in Terminal"),
+                    "Open in Terminal",
                     Box::new(OpenInTerminal),
                 )
                 .action_disabled_when(
                     !has_git_repo,
-                    ui::tr::translate("Copy Permalink"),
+                    "Copy Permalink",
                     Box::new(CopyPermalinkToLine),
                 )
                 .action_disabled_when(
                     !has_git_repo,
-                    ui::tr::translate("View File History"),
+                    "View File History",
                     Box::new(git::FileHistory),
                 );
             match focus {

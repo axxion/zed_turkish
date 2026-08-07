@@ -3051,19 +3051,25 @@ impl ThreadView {
 
         let retry_message = if state.max_attempts == 1 {
             if next_attempt_in_secs == 1 {
-                "Retrying. Next attempt in 1 second.".to_string()
+                ui::tr::translate("Retrying. Next attempt in 1 second.").to_string()
             } else {
-                format!("Retrying. Next attempt in {next_attempt_in_secs} seconds.")
+                ui::tr_format!(
+                    "Retrying. Next attempt in {} seconds.",
+                    next_attempt_in_secs
+                )
             }
         } else if next_attempt_in_secs == 1 {
-            format!(
+            ui::tr_format!(
                 "Retrying. Next attempt in 1 second (Attempt {} of {}).",
-                state.attempt, state.max_attempts,
+                state.attempt,
+                state.max_attempts,
             )
         } else {
-            format!(
-                "Retrying. Next attempt in {next_attempt_in_secs} seconds (Attempt {} of {}).",
-                state.attempt, state.max_attempts,
+            ui::tr_format!(
+                "Retrying. Next attempt in {} seconds (Attempt {} of {}).",
+                next_attempt_in_secs,
+                state.attempt,
+                state.max_attempts,
             )
         };
 

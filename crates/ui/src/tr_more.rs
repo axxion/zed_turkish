@@ -2462,6 +2462,20 @@ pub(crate) fn builtin_more(text: &str) -> Option<&'static str> {
         "Zed Repository" => "Zed Deposu",
         "Join the Team" => "Ekibe Katıl",
         "Expand Message Editor" => "Mesaj Editörünü Genişlet",
+        "Open Recent Project" => "Son Projeyi Aç",
+        "untitled" => "adsız",
+        "Unrecognized Project" => "Tanınmayan Proje",
+        "Unrecognized Projects ({})" => "Tanınmayan Projeler ({})",
+        "Retrying. Next attempt in 1 second." => "Yeniden deneniyor. Sonraki deneme 1 saniye sonra.",
+        "Retrying. Next attempt in {} seconds." => {
+            "Yeniden deneniyor. Sonraki deneme {} saniye sonra."
+        }
+        "Retrying. Next attempt in 1 second (Attempt {} of {})." => {
+            "Yeniden deneniyor. Sonraki deneme 1 saniye sonra ({}/{} deneme)."
+        }
+        "Retrying. Next attempt in {} seconds (Attempt {} of {})." => {
+            "Yeniden deneniyor. Sonraki deneme {} saniye sonra ({}/{} deneme)."
+        }
         "About Zed L10n" => "Zed L10n Hakkında",
 
 

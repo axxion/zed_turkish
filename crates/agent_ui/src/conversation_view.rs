@@ -4500,9 +4500,16 @@ pub(crate) mod tests {
             assert_eq!(available_commands[0].description.as_str(), "Get help");
         });
 
+        // Zed L10n: placeholder metni `tr_format!` ile çevrilir, bu yüzden
+        // beklenen değer sabit İngilizce olamaz — seçili dile göre değişir.
+        // Aynı şablondan üretip karşılaştırıyoruz: test hangi dilde çalışırsa
+        // çalışsın, doğru şablonun kullanıldığını doğrular.
         assert_eq!(
             placeholder,
-            Some("Message Test — @ to include context, / for commands".to_string())
+            Some(ui::tr_format!(
+                "Message {} — @ to include context, / for commands",
+                "Test"
+            ))
         );
 
         message_editor.update_in(cx, |editor, window, cx| {

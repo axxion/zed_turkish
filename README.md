@@ -38,7 +38,7 @@ through it.
 
 ## İndir / Download
 
-**[→ Son sürüm / Latest release](https://github.com/axxion/zed_turkish/releases/latest)**
+**[→ Son sürüm / Latest release](https://github.com/axxion/Zed-L10n/releases/latest)**
 
 ZIP'i indirip **klasörün tamamını** bir yere çıkarın (örneğin `%LOCALAPPDATA%\ZedL10n`)
 ve `zed-l10n.exe` dosyasını çalıştırın. Kurulum sihirbazı yoktur.
@@ -50,7 +50,7 @@ Extract the **whole folder** somewhere (e.g. `%LOCALAPPDATA%\ZedL10n`) and run
 |---|---|
 | `zed-l10n.exe` | Uygulama. Türkçe sözlük içine gömülüdür / The app; Turkish dictionary is built in |
 | `OpenConsole.exe` + `conpty.dll` | Terminal için gerekli (Microsoft ConPTY) / Required for the terminal |
-| `translations.json` | Dil dosyası — düzenleyip kendi dilinizi ekleyebilirsiniz / The locale file you can edit |
+| `locales/tr.json` | Türkçe dil dosyası; yeni diller için şablon / Turkish locale, template for others |
 
 ### Windows uyarısı / Windows warning
 
@@ -67,13 +67,43 @@ Visual C++ Redistributable kurmanıza gerek yoktur.
 
 ---
 
+## Dil seçme / Choosing a language
+
+`settings.json` dosyanıza `locale` yazın; değişiklik **yeniden başlatmada**
+etkinleşir.
+
+Set `locale` in your `settings.json`; the change takes effect **after a restart**.
+
+```jsonc
+{
+  "locale": "en"   // system | en | tr | de | ...
+}
+```
+
+| Değer / Value | Sonuç / Effect |
+|---|---|
+| `system` | İşletim sistemi dili, yoksa İngilizce / OS language, falls back to English |
+| `en` | Çeviri kapalı, özgün İngilizce / Translation off, original English |
+| `tr`, `de`, … | `locales/<kod>.json` okunur / reads `locales/<code>.json` |
+
+Arama sırası / Lookup order:
+
+```
+%APPDATA%\Zed-L10n\locales\<kod>.json    ← kendi dosyanız / your own file
+<exe dizini>\locales\<kod>.json          ← ZIP'ten gelen / shipped
+ikiliye gömülü Türkçe / built-in Turkish ← yalnızca "tr" / only for "tr"
+özgün İngilizce / original English
+```
+
 ## Kendi dilinize çevirin / Translate into your language
 
-`zed-l10n.exe` dosyasının **yanındaki** `translations.json` çalışma zamanında okunur.
-Anahtar, uygulamanın **özgün İngilizce metnidir**; değer, görmek istediğiniz metin.
+`locales/tr.json` dosyasını kopyalayıp kendi dil kodunuzla kaydedin, değerleri
+çevirin, `locale` ayarını o koda getirin. Anahtar, uygulamanın **özgün İngilizce
+metnidir**; değer, görmek istediğiniz metin.
 
-`translations.json` sits **next to** `zed-l10n.exe` and is read at runtime. The key
-is the app's **original English string**; the value is what you want displayed.
+Copy `locales/tr.json`, rename it to your language code, translate the values and
+point `locale` at it. The key is the app's **original English string**; the value
+is what you want displayed.
 
 ```json
 {
@@ -108,13 +138,17 @@ word order differs between languages the value may use positional placeholders:
 
 ### Yeni bir dil paketi başlatmak / Starting a new locale
 
-Depodaki [`translations.json`](translations.json) tam Türkçe sözlüktür (2500+ giriş)
+Depodaki [`locales/tr.json`](locales/tr.json) tam Türkçe sözlüktür (2500+ giriş)
 ve **anahtar listesi olarak** kullanılabilir: kopyalayın, değerleri kendi dilinize
-çevirin, `zed-l10n.exe` yanına koyun.
+çevirin, `locales/` klasörüne koyun.
 
-The [`translations.json`](translations.json) in this repo is the complete Turkish
+The [`locales/tr.json`](locales/tr.json) in this repo is the complete Turkish
 dictionary (2500+ entries) and doubles as **the list of translatable keys**: copy
-it, translate the values, drop it next to `zed-l10n.exe`.
+it, translate the values, drop it into `locales/`.
+
+**Önemli:** Seçtiğiniz dilde bir metnin karşılığı yoksa o metin İngilizce kalır,
+Türkçeye düşmez — yarım çeviri karışımı olmasın diye. / **Note:** missing entries
+fall back to English, never to Turkish.
 
 ### Sınırlar / Limitations
 
@@ -127,6 +161,11 @@ it, translate the values, drop it next to `zed-l10n.exe`.
 - `format!` ile kurulan bazı metinler henüz şablona bağlanmamıştır; bunlar
   İngilizce kalır. / Some `format!`-built strings are not yet templated and remain
   in English.
+- Ayarlarda henüz açılır dil menüsü yok; dil `settings.json` üzerinden seçilir. /
+  No language dropdown in the settings UI yet; use `settings.json`.
+- `"system"` Windows'ta çoğunlukla İngilizceye düşer (sistem dilini okumak için
+  platform çağrısı gerekiyor). / `"system"` usually falls back to English on
+  Windows.
 
 ---
 
